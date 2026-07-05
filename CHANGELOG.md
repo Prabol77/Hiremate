@@ -26,3 +26,15 @@ All notable changes to HireMate will be documented in this file.
 - Job Description Parser
 - ATS Matching Engine
 - Skill Gap Analysis
+## [0.2.0] - ATS Matching Engine
+
+### Added
+- Job Description parser (PDF/TXT)
+- JobData model
+- ATS comparison engine
+- AnalysisService orchestration layer
+- Skill matching
+- Missing skill detection
+- Additional skill detection
+- ATS score calculation
+- Dashboard integration
