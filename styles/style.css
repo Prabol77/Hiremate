@@ -1,0 +1,116 @@
+/* ===============================
+   Google Font
+================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ===============================
+   Global
+================================== */
+
+html,
+body,
+[class*="css"] {
+    font-family: "Inter", sans-serif;
+}
+
+/* ===============================
+   Main App
+================================== */
+
+.main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* ===============================
+   Metric Cards
+================================== */
+
+div[data-testid="metric-container"] {
+
+    background-color: #FFFFFF;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    border: 1px solid #E5E7EB;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.05);
+
+}
+
+/* ===============================
+   Buttons
+================================== */
+
+.stButton > button {
+
+    width: 100%;
+
+    border-radius: 10px;
+
+    height: 48px;
+
+    font-weight: 600;
+
+}
+
+/* ===============================
+   File Upload
+================================== */
+
+section[data-testid="stFileUploader"] {
+
+    border-radius: 16px;
+
+    border: 2px dashed #CBD5E1;
+
+    padding: 18px;
+
+}
+
+/* ===============================
+   Sidebar
+================================== */
+
+section[data-testid="stSidebar"] {
+
+    border-right: 1px solid #E5E7EB;
+
+}
+
+/* ===============================
+   Expander
+================================== */
+
+.streamlit-expanderHeader {
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+}
+
+/* ===============================
+   Headers
+================================== */
+
+h1 {
+
+    font-weight: 800;
+
+}
+
+h2 {
+
+    font-weight: 700;
+
+}
+
+h3 {
+
+    font-weight: 600;
+
+}

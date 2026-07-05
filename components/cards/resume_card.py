@@ -1,12 +1,16 @@
 import streamlit as st
 
+from models.resume_model import ResumeData
 
-def render_resume_card(resume):
+
+def render_resume_card(
+    resume: ResumeData,
+):
     """
-    Display candidate information.
+    Render candidate information.
     """
 
-    st.subheader("👤 Candidate Information")
+    st.header("👤 Candidate Information")
 
     col1, col2 = st.columns(2)
 
@@ -21,17 +25,17 @@ def render_resume_card(resume):
         )
 
         st.write(
-            f"**LinkedIn:** {resume.personal_info.linkedin}"
+            f"**Phone:** {resume.personal_info.phone}"
         )
 
     with col2:
 
         st.write(
-            f"**Phone:** {resume.personal_info.phone}"
+            f"**Location:** {resume.personal_info.location}"
         )
 
         st.write(
-            f"**Location:** {resume.personal_info.location}"
+            f"**LinkedIn:** {resume.personal_info.linkedin}"
         )
 
         st.write(

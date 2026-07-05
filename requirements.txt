@@ -25,3 +25,8 @@ Pillow
 spacy
 
 nltk
+
+plotly
+
+streamlit-extras
+streamlit-option-menu

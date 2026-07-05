@@ -1,9 +1,9 @@
 import streamlit as st
 
 
-def render_preview(text: str):
+def render_preview_card(text: str):
     """
-    Resume preview.
+    Render resume preview widget.
     """
 
     with st.expander(
@@ -12,7 +12,7 @@ def render_preview(text: str):
     ):
 
         st.text_area(
-            "",
+            label="",
             value=text[:3000],
             height=350,
         )

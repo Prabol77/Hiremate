@@ -1,0 +1,30 @@
+"""
+HireMate Design System
+Color Palette
+"""
+
+PRIMARY = "#2563EB"
+
+PRIMARY_DARK = "#1D4ED8"
+
+PRIMARY_LIGHT = "#DBEAFE"
+
+SUCCESS = "#22C55E"
+
+WARNING = "#F59E0B"
+
+ERROR = "#EF4444"
+
+INFO = "#06B6D4"
+
+BACKGROUND = "#F8FAFC"
+
+SURFACE = "#FFFFFF"
+
+TEXT_PRIMARY = "#111827"
+
+TEXT_SECONDARY = "#6B7280"
+
+BORDER = "#E5E7EB"
+
+SHADOW = "rgba(0,0,0,0.08)"

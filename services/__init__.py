@@ -1,1 +1,3 @@
-self.skill_service = SkillService()
+"""
+HireMate Services Package.
+"""

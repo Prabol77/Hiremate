@@ -1,30 +1,46 @@
+"""
+HireMate Application Entry Point.
+"""
+
 import streamlit as st
 
-from components.sidebar import render_sidebar
+from components.layout.sidebar import render_sidebar
+from styles.theme import load_theme
 
-from pages.dashboard import show_dashboard
-from pages.resume_analysis import show_resume_analysis
-from pages.interview_prep import show_interview_prep
-from pages.about import show_about
+from views.dashboard import show_dashboard
+from views.resume_analysis import show_resume_analysis
+from views.interview_prep import show_interview_prep
+from views.about import show_about
 
 
-st.set_page_config(
-    page_title="HireMate",
-    page_icon="💼",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+def main():
+    """
+    Configure and launch the HireMate application.
+    """
 
-page = render_sidebar()
+    st.set_page_config(
+        page_title="HireMate",
+        page_icon="💼",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
 
-if page == "Dashboard":
-    show_dashboard()
+    load_theme()
 
-elif page == "Resume Analysis":
-    show_resume_analysis()
+    page = render_sidebar()
 
-elif page == "Interview Prep":
-    show_interview_prep()
+    if page == "Dashboard":
+        show_dashboard()
 
-else:
-    show_about()
+    elif page == "Resume Analysis":
+        show_resume_analysis()
+
+    elif page == "Interview Prep":
+        show_interview_prep()
+
+    else:
+        show_about()
+
+
+if __name__ == "__main__":
+    main()

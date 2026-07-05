@@ -1,0 +1,25 @@
+"""
+Typography constants.
+"""
+
+FONT_FAMILY = "Inter"
+
+H1_SIZE = "2.25rem"
+
+H2_SIZE = "1.75rem"
+
+H3_SIZE = "1.25rem"
+
+BODY_SIZE = "1rem"
+
+SMALL_SIZE = "0.875rem"
+
+FONT_WEIGHT_LIGHT = 300
+
+FONT_WEIGHT_REGULAR = 400
+
+FONT_WEIGHT_MEDIUM = 500
+
+FONT_WEIGHT_SEMIBOLD = 600
+
+FONT_WEIGHT_BOLD = 700
