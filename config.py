@@ -1,0 +1,7 @@
+UPLOAD_DIR = "uploads"
+
+MAX_PREVIEW_CHARS = 2500
+
+SUPPORTED_RESUME_TYPES = ["pdf"]
+
+SUPPORTED_JD_TYPES = ["pdf", "txt"]

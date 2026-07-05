@@ -1,0 +1,1 @@
+self.skill_service = SkillService()
