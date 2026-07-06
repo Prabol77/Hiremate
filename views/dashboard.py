@@ -7,10 +7,17 @@ from config import (
 
 from components.layout.hero_section import render_hero_section
 
-from components.cards.ats_card import render_ats_card
 from components.cards.statistics_card import render_statistics_card
+from components.cards.ats_card import render_ats_card
 from components.cards.summary_card import render_summary_card
 from components.cards.resume_card import render_resume_card
+from components.cards.review_card import render_review_card
+from components.cards.recommendation_card import (
+    render_recommendation_card,
+)
+from components.cards.interview_card import (
+    render_interview_card,
+)
 
 from components.widgets.resume_preview import render_preview_card
 from components.widgets.skills_grid import render_skills_card
@@ -53,7 +60,7 @@ def show_dashboard():
     if not (resume and jd):
 
         st.info(
-            "Upload both files to begin ATS analysis."
+            "Upload both Resume and Job Description to begin analysis."
         )
 
         return
@@ -61,8 +68,12 @@ def show_dashboard():
     try:
 
         with st.spinner(
-            "Analyzing your resume..."
+            "Analyzing Resume..."
         ):
+
+            # =====================================
+            # Save Uploaded Files
+            # =====================================
 
             resume_path = save_uploaded_file(
                 resume
@@ -72,11 +83,19 @@ def show_dashboard():
                 jd
             )
 
+            # =====================================
+            # Extract Resume
+            # =====================================
+
             resume_pdf = extract_pdf_data(
                 resume_path
             )
 
             resume_text = resume_pdf["text"]
+
+            # =====================================
+            # Extract JD
+            # =====================================
 
             if jd.name.lower().endswith(".pdf"):
 
@@ -96,12 +115,19 @@ def show_dashboard():
 
                     jd_text = file.read()
 
+            # =====================================
+            # Complete Analysis Pipeline
+            # =====================================
+
             analysis = AnalysisService()
 
             (
                 resume_data,
                 job_data,
                 ats_result,
+                review,
+                recommendations,
+                interview,
             ) = analysis.analyze(
                 resume_text,
                 jd_text,
@@ -111,13 +137,27 @@ def show_dashboard():
             "✅ Analysis completed successfully."
         )
 
-        overview_tab, skills_tab, candidate_tab = st.tabs(
+        (
+            overview_tab,
+            skills_tab,
+            review_tab,
+            recommendation_tab,
+            interview_tab,
+            candidate_tab,
+        ) = st.tabs(
             [
                 "📊 Overview",
                 "🛠 Skills",
+                "🤖 AI Review",
+                "💡 Recommendations",
+                "🎤 Interview",
                 "👤 Candidate",
             ]
         )
+
+        # =====================================================
+        # OVERVIEW
+        # =====================================================
 
         with overview_tab:
 
@@ -143,19 +183,23 @@ def show_dashboard():
 
             st.divider()
 
-            chart1, chart2 = st.columns(2)
+            chart_left, chart_right = st.columns(2)
 
-            with chart1:
+            with chart_left:
 
                 render_gauge(
                     ats_result.overall_score
                 )
 
-            with chart2:
+            with chart_right:
 
                 render_skill_chart(
                     ats_result
                 )
+
+        # =====================================================
+        # SKILLS
+        # =====================================================
 
         with skills_tab:
 
@@ -184,6 +228,40 @@ def show_dashboard():
                     ats_result.additional_skills,
                     "info",
                 )
+
+        # =====================================================
+        # AI REVIEW
+        # =====================================================
+
+        with review_tab:
+
+            render_review_card(
+                review
+            )
+
+        # =====================================================
+        # RECOMMENDATIONS
+        # =====================================================
+
+        with recommendation_tab:
+
+            render_recommendation_card(
+                recommendations
+            )
+
+        # =====================================================
+        # INTERVIEW QUESTIONS
+        # =====================================================
+
+        with interview_tab:
+
+            render_interview_card(
+                interview
+            )
+
+        # =====================================================
+        # CANDIDATE
+        # =====================================================
 
         with candidate_tab:
 

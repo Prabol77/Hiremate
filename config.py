@@ -1,7 +1,38 @@
-UPLOAD_DIR = "uploads"
+import os
 
-MAX_PREVIEW_CHARS = 2500
+from dotenv import load_dotenv
 
-SUPPORTED_RESUME_TYPES = ["pdf"]
+load_dotenv()
 
-SUPPORTED_JD_TYPES = ["pdf", "txt"]
+# ======================================================
+# Application
+# ======================================================
+
+APP_NAME = "HireMate"
+
+APP_VERSION = "0.4.0"
+
+# ======================================================
+# Supported Upload Types
+# ======================================================
+
+SUPPORTED_RESUME_TYPES = [
+    "pdf",
+]
+
+SUPPORTED_JD_TYPES = [
+    "pdf",
+    "txt",
+]
+
+# ======================================================
+# Groq Configuration
+# ======================================================
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+GROQ_MODEL = "llama-3.3-70b-versatile"
+
+TEMPERATURE = 0.3
+
+MAX_TOKENS = 2048

@@ -30,3 +30,6 @@ plotly
 
 streamlit-extras
 streamlit-option-menu
+
+groq
+python-dotenv
