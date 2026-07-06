@@ -5,17 +5,14 @@ import json
 # ==========================================================
 
 REVIEW_SYSTEM_PROMPT = """
-You are an expert ATS recruiter, resume reviewer,
-and technical hiring manager.
+You are an experienced ATS recruiter and senior hiring manager.
 
-Analyze the candidate's resume against the provided
-job description.
+Analyze the candidate's resume against the provided job description.
 
 Return ONLY valid JSON.
 
-Do not include markdown.
-Do not include explanations.
-Do not wrap the JSON in code fences.
+Do not use markdown.
+Do not wrap JSON inside code blocks.
 """
 
 
@@ -24,23 +21,18 @@ def review_prompt(
     job_description: str,
 ):
     """
-    Build prompt for AI Resume Review.
+    Build prompt for AI resume review.
     """
 
     schema = {
-
         "summary": "",
-
         "strengths": [],
-
         "weaknesses": [],
-
-        "recommendations": []
-
+        "recommendations": [],
     }
 
     return f"""
-Return JSON matching this schema.
+Return JSON matching this schema exactly.
 
 {json.dumps(schema, indent=4)}
 
@@ -55,18 +47,67 @@ Job Description:
 
 
 # ==========================================================
-# AI Interview Generator
+# AI Recommendations
+# ==========================================================
+
+RECOMMENDATION_SYSTEM_PROMPT = """
+You are an expert ATS recruiter and career coach.
+
+Analyze the candidate's resume against the job description.
+
+Provide practical recommendations.
+
+Return ONLY valid JSON.
+
+Do not use markdown.
+Do not wrap JSON inside code blocks.
+"""
+
+
+def recommendation_prompt(
+    resume: str,
+    job_description: str,
+):
+    """
+    Build prompt for AI recommendations.
+    """
+
+    schema = {
+        "ats_optimization": [],
+        "skills_to_learn": [],
+        "resume_improvements": [],
+        "next_steps": [],
+    }
+
+    return f"""
+Return JSON matching this schema exactly.
+
+{json.dumps(schema, indent=4)}
+
+Resume:
+
+{resume}
+
+Job Description:
+
+{job_description}
+"""
+
+
+# ==========================================================
+# AI Interview Questions
 # ==========================================================
 
 INTERVIEW_SYSTEM_PROMPT = """
 You are an experienced Technical Interviewer.
 
-Generate interview questions based on the candidate's
-resume and the job description.
+Generate interview questions based on the candidate's resume
+and the job description.
 
 Return ONLY valid JSON.
 
-Do not include markdown.
+Do not use markdown.
+Do not wrap JSON inside code blocks.
 """
 
 
@@ -75,27 +116,20 @@ def interview_prompt(
     job_description: str,
 ):
     """
-    Build prompt for AI Interview Questions.
+    Build prompt for AI interview generation.
     """
 
     schema = {
-
         "questions": {
-
             "Technical": [],
-
             "Programming": [],
-
-            "Behavioral": []
-
+            "Behavioral": [],
         },
-
-        "overall_tips": []
-
+        "overall_tips": [],
     }
 
     return f"""
-Return JSON matching this schema.
+Return JSON matching this schema exactly.
 
 {json.dumps(schema, indent=4)}
 

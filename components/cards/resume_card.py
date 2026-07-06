@@ -5,39 +5,59 @@ from models.resume_model import ResumeData
 
 def render_resume_card(
     resume: ResumeData,
-):
+) -> None:
     """
     Render candidate information.
+
+    Args:
+        resume:
+            Parsed resume data.
     """
 
     st.header("👤 Candidate Information")
+
+    info = resume.personal_info
+
+    left_fields = [
+        (
+            "Name",
+            info.name,
+        ),
+        (
+            "Email",
+            info.email,
+        ),
+        (
+            "Phone",
+            info.phone,
+        ),
+    ]
+
+    right_fields = [
+        (
+            "Location",
+            info.location,
+        ),
+        (
+            "LinkedIn",
+            info.linkedin,
+        ),
+        (
+            "GitHub",
+            info.github,
+        ),
+    ]
 
     col1, col2 = st.columns(2)
 
     with col1:
 
-        st.write(
-            f"**Name:** {resume.personal_info.name}"
-        )
+        for label, value in left_fields:
 
-        st.write(
-            f"**Email:** {resume.personal_info.email}"
-        )
-
-        st.write(
-            f"**Phone:** {resume.personal_info.phone}"
-        )
+            st.write(f"**{label}:** {value or 'Not Available'}")
 
     with col2:
 
-        st.write(
-            f"**Location:** {resume.personal_info.location}"
-        )
+        for label, value in right_fields:
 
-        st.write(
-            f"**LinkedIn:** {resume.personal_info.linkedin}"
-        )
-
-        st.write(
-            f"**GitHub:** {resume.personal_info.github}"
-        )
+            st.write(f"**{label}:** {value or 'Not Available'}")

@@ -1,43 +1,55 @@
 import streamlit as st
 
 
-def render_hero_section():
+def render_hero_section() -> None:
     """
-    Render the landing hero section.
+    Render the HireMate landing hero section.
     """
 
     st.title("💼 HireMate")
 
-    st.subheader(
-        "AI-Powered Resume Intelligence Platform"
-    )
+    st.subheader("AI-Powered Resume Intelligence Platform")
 
-    st.write(
-        """
-Analyze your resume against a job description to discover
-your ATS score, identify missing skills, and prepare for
-technical interviews with AI-powered insights.
-"""
-    )
+    st.write("""
+Analyze your resume against a job description to evaluate
+ATS compatibility, identify missing skills, receive
+AI-powered resume feedback, and prepare for interviews.
+""")
 
-    st.markdown("### What HireMate Offers")
+    st.divider()
 
-    feature_col1, feature_col2 = st.columns(2)
+    st.markdown("### ✨ What HireMate Offers")
 
-    with feature_col1:
+    available_features = [
+        "🎯 ATS Resume Matching",
+        "🛠 Skill Gap Analysis",
+        "🤖 AI Resume Intelligence",
+    ]
 
-        st.success("✔ ATS Resume Matching")
+    upcoming_features = [
+        "🚧 AI Career Coach (Coming Soon)",
+        "🎤 Interview Preparation",
+        "📚 Learning Roadmap",
+    ]
 
-        st.success("✔ Skill Gap Analysis")
+    col1, col2 = st.columns(2)
 
-        st.success("✔ Resume Intelligence")
+    with col1:
 
-    with feature_col2:
+        for feature in available_features:
 
-        st.success("✔ AI Career Coach (Coming Soon)")
+            st.success(feature)
 
-        st.success("✔ Interview Preparation")
+    with col2:
 
-        st.success("✔ Learning Roadmap")
+        for feature in upcoming_features:
+
+            if "Coming Soon" in feature:
+
+                st.info(feature)
+
+            else:
+
+                st.success(feature)
 
     st.divider()

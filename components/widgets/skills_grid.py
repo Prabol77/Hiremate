@@ -1,33 +1,48 @@
 import streamlit as st
 
+STATUS_RENDERERS = {
+    "success": st.success,
+    "error": st.error,
+    "info": st.info,
+}
+
 
 def render_skills_card(
     title: str,
     skills: list[str],
     status: str,
-):
+) -> None:
     """
-    Render skills grid.
+    Render a categorized skills list.
+
+    Args:
+        title:
+            Card title.
+
+        skills:
+            List of skills.
+
+        status:
+            Display style.
+            Supported:
+                - success
+                - error
+                - info
     """
 
     st.subheader(title)
 
     if not skills:
 
-        st.info("None")
+        st.info("No skills available.")
 
         return
 
-    for skill in skills:
+    renderer = STATUS_RENDERERS.get(
+        status,
+        st.info,
+    )
 
-        if status == "success":
+    for skill in sorted(skills):
 
-            st.success(skill)
-
-        elif status == "error":
-
-            st.error(skill)
-
-        else:
-
-            st.info(skill)
+        renderer(skill)

@@ -45,9 +45,7 @@ def extract_pdf_data(pdf_path: str) -> dict:
 
     except Exception as e:
 
-        raise Exception(
-            f"Unable to parse PDF: {e}"
-        )
+        raise Exception(f"Unable to parse PDF: {e}")
 
     finally:
 

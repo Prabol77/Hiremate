@@ -1,15 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Environment Variables
 .env
 
+# Streamlit
+.streamlit/secrets.toml
+
+# Generated Files
+generated_reports/
 uploads/
 
-temp/
-
-__pycache__/
-
-*.pyc
-
+# IDE
 .vscode/
-
 .idea/
 
-*.db
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
