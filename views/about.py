@@ -8,8 +8,7 @@ def show_about():
 
     st.title("About HireMate")
 
-    st.markdown(
-        """
+    st.markdown("""
 ## 💼 HireMate
 
 HireMate is an AI-powered Resume Intelligence Platform that helps job seekers:
@@ -21,5 +20,4 @@ HireMate is an AI-powered Resume Intelligence Platform that helps job seekers:
 - Improve resumes using AI
 
 **Version:** v0.3.0
-"""
-    )
+""")

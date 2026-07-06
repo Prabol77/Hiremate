@@ -1,10 +1,6 @@
 import streamlit as st
 
-from styles.colors import (
-    PRIMARY,
-    SUCCESS,
-    WARNING,
-)
+from styles.colors import PRIMARY, SUCCESS, WARNING
 
 
 def render_kpi_card(

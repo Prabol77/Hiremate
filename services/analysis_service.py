@@ -1,9 +1,8 @@
-from services.resume_service import ResumeService
-from services.jd_service import JDService
-from services.ats_service import ATSService
 from services.ai_service import AIService
-from services.recommendation_service import RecommendationService
+from services.ats_service import ATSService
 from services.interview_service import InterviewService
+from services.jd_service import JDService
+from services.resume_service import ResumeService
 
 
 class AnalysisService:
@@ -32,8 +31,6 @@ class AnalysisService:
 
         self.ai_service = AIService()
 
-        self.recommendation_service = RecommendationService()
-
         self.interview_service = InterviewService()
 
     def analyze(
@@ -43,41 +40,19 @@ class AnalysisService:
     ):
         """
         Execute the complete HireMate analysis pipeline.
-
-        Args:
-            resume_text (str):
-                Extracted resume text.
-
-            jd_text (str):
-                Extracted job description text.
-
-        Returns:
-            tuple:
-            (
-                ResumeData,
-                JobData,
-                ATSResult,
-                ReviewResult,
-                RecommendationResult,
-                InterviewResult,
-            )
         """
 
         # ==========================================
         # Resume Parsing
         # ==========================================
 
-        resume_data = self.resume_service.parse(
-            resume_text
-        )
+        resume_data = self.resume_service.parse(resume_text)
 
         # ==========================================
         # Job Description Parsing
         # ==========================================
 
-        job_data = self.jd_service.parse(
-            jd_text
-        )
+        job_data = self.jd_service.parse(jd_text)
 
         # ==========================================
         # ATS Matching
@@ -101,21 +76,18 @@ class AnalysisService:
         # AI Recommendations
         # ==========================================
 
-        recommendations = (
-            self.recommendation_service.generate(
-                ats_result
-            )
+        recommendations = self.ai_service.generate_recommendations(
+            resume_text,
+            jd_text,
         )
 
         # ==========================================
         # AI Interview Questions
         # ==========================================
 
-        interview = (
-            self.interview_service.generate(
-                resume_text,
-                jd_text,
-            )
+        interview = self.interview_service.generate(
+            resume_text,
+            jd_text,
         )
 
         # ==========================================

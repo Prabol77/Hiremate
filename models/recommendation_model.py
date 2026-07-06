@@ -5,11 +5,13 @@ from typing import List
 @dataclass
 class RecommendationResult:
     """
-    Stores AI recommendations.
+    Stores AI-generated career recommendations.
     """
 
-    technical: List[str] = field(default_factory=list)
+    ats_optimization: List[str] = field(default_factory=list)
 
-    resume: List[str] = field(default_factory=list)
+    skills_to_learn: List[str] = field(default_factory=list)
 
-    career: List[str] = field(default_factory=list)
+    resume_improvements: List[str] = field(default_factory=list)
+
+    next_steps: List[str] = field(default_factory=list)

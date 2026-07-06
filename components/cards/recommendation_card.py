@@ -4,36 +4,58 @@ from models.recommendation_model import RecommendationResult
 
 
 def render_recommendation_card(
-    recommendations: RecommendationResult,
-):
+    recommendation: RecommendationResult,
+) -> None:
     """
-    Render AI recommendations.
+    Render AI-powered career recommendations.
+
+    Args:
+        recommendation:
+            AI-generated recommendation results.
     """
 
-    st.header("💡 AI Recommendations")
+    st.header("🎯 AI Career Recommendations")
 
-    col1, col2, col3 = st.columns(3)
+    sections = [
+        (
+            "🎯 ATS Optimization",
+            recommendation.ats_optimization,
+            st.success,
+        ),
+        (
+            "📚 Skills to Learn",
+            recommendation.skills_to_learn,
+            st.info,
+        ),
+        (
+            "📝 Resume Improvements",
+            recommendation.resume_improvements,
+            st.warning,
+        ),
+        (
+            "🚀 Next Steps",
+            recommendation.next_steps,
+            st.success,
+        ),
+    ]
 
-    with col1:
+    for (
+        title,
+        items,
+        render_function,
+    ) in sections:
 
-        st.subheader("🛠 Technical")
+        with st.expander(
+            title,
+            expanded=True,
+        ):
 
-        for item in recommendations.technical:
+            if items:
 
-            st.info(item)
+                for item in items:
 
-    with col2:
+                    render_function(item)
 
-        st.subheader("📄 Resume")
+            else:
 
-        for item in recommendations.resume:
-
-            st.success(item)
-
-    with col3:
-
-        st.subheader("🚀 Career")
-
-        for item in recommendations.career:
-
-            st.warning(item)
+                st.info("No recommendations available.")

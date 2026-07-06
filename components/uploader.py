@@ -1,24 +1,64 @@
 import os
-import streamlit as st
+import uuid
+from pathlib import Path
+
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 
-def save_uploaded_file(uploaded_file, upload_dir="uploads"):
+def save_uploaded_file(
+    uploaded_file: UploadedFile,
+    upload_dir: str = "uploads",
+) -> str:
     """
-    Save the uploaded file locally.
+    Save an uploaded file safely.
 
     Args:
-        uploaded_file: Streamlit uploaded file object
-        upload_dir (str): Directory where files will be saved
+        uploaded_file:
+            Streamlit uploaded file.
+
+        upload_dir:
+            Directory used to store uploaded files.
 
     Returns:
-        str: Path to the saved file
+        str:
+            Absolute path to the saved file.
+
+    Raises:
+        ValueError:
+            If no file is provided.
+
+        IOError:
+            If the file cannot be written.
     """
 
-    os.makedirs(upload_dir, exist_ok=True)
+    if uploaded_file is None:
+        raise ValueError("No uploaded file provided.")
 
-    file_path = os.path.join(upload_dir, uploaded_file.name)
+    os.makedirs(
+        upload_dir,
+        exist_ok=True,
+    )
 
-    with open(file_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
+    extension = Path(uploaded_file.name).suffix.lower()
+
+    unique_filename = f"{uuid.uuid4().hex}{extension}"
+
+    file_path = os.path.join(
+        upload_dir,
+        unique_filename,
+    )
+
+    try:
+
+        with open(
+            file_path,
+            "wb",
+        ) as file:
+
+            file.write(uploaded_file.getbuffer())
+
+    except OSError as exc:
+
+        raise IOError(f"Unable to save uploaded file: {exc}") from exc
 
     return file_path

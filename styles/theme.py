@@ -12,9 +12,7 @@ def load_theme():
 
     if css_path.exists():
 
-        css = css_path.read_text(
-            encoding="utf-8"
-        )
+        css = css_path.read_text(encoding="utf-8")
 
         st.markdown(
             f"<style>{css}</style>",

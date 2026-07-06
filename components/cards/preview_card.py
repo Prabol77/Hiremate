@@ -8,9 +8,7 @@ def render_preview_card(text):
     Resume Preview.
     """
 
-    with st.expander(
-        "📄 Resume Preview"
-    ):
+    with st.expander("📄 Resume Preview"):
 
         st.text_area(
             "",

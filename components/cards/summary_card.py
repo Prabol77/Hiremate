@@ -1,18 +1,41 @@
 import streamlit as st
 
+from models.ats_model import ATSResult
 
-def render_summary_card(result):
 
-    matched = len(result.matched_skills)
+def render_summary_card(
+    result: ATSResult,
+) -> None:
+    """
+    Render a summary of the ATS analysis.
 
-    missing = len(result.missing_skills)
+    Args:
+        result:
+            ATS analysis result.
+    """
 
-    additional = len(result.additional_skills)
+    statistics = [
+        (
+            "Matched",
+            len(result.matched_skills or []),
+        ),
+        (
+            "Missing",
+            len(result.missing_skills or []),
+        ),
+        (
+            "Additional",
+            len(result.additional_skills or []),
+        ),
+    ]
 
-    c1, c2, c3 = st.columns(3)
+    columns = st.columns(len(statistics))
 
-    c1.metric("Matched", matched)
-
-    c2.metric("Missing", missing)
-
-    c3.metric("Extra", additional)
+    for column, (label, value) in zip(
+        columns,
+        statistics,
+    ):
+        column.metric(
+            label,
+            value,
+        )

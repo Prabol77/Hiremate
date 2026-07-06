@@ -8,16 +8,12 @@ def render_dashboard_header():
 
     st.title("💼 HireMate")
 
-    st.caption(
-        "AI-Powered Resume & ATS Matching Platform"
-    )
+    st.caption("AI-Powered Resume & ATS Matching Platform")
 
-    st.markdown(
-        """
+    st.markdown("""
 Analyze your resume against a Job Description,
 discover skill gaps,
 and prepare for interviews.
-"""
-    )
+""")
 
     st.divider()

@@ -1,39 +1,44 @@
 import json
 
 from models.interview_model import InterviewResult
-
 from services.groq_service import GroqService
-
-from utils.prompts import (
-    INTERVIEW_SYSTEM_PROMPT,
-    interview_prompt,
-)
+from utils.prompts import INTERVIEW_SYSTEM_PROMPT, interview_prompt
 
 
 class InterviewService:
     """
-    Generates AI interview questions using Groq.
+    Generates AI-powered interview questions based on
+    the candidate's resume and job description.
     """
 
     def __init__(self):
 
         self.groq = GroqService()
 
+    # =====================================================
+    # Interview Question Generation
+    # =====================================================
+
     def generate(
         self,
         resume_text: str,
         jd_text: str,
     ) -> InterviewResult:
+        """
+        Generate categorized interview questions.
+
+        Returns:
+            InterviewResult
+        """
+
+        prompt = interview_prompt(
+            resume_text,
+            jd_text,
+        )
 
         response = self.groq.chat(
-
             INTERVIEW_SYSTEM_PROMPT,
-
-            interview_prompt(
-                resume_text,
-                jd_text,
-            ),
-
+            prompt,
         )
 
         result = InterviewResult()
@@ -52,16 +57,14 @@ class InterviewService:
                 [],
             )
 
-        except Exception:
+        except json.JSONDecodeError:
 
             result.questions = {
-
-                "AI Error": [
-
-                    response
-
+                "AI Response": [
+                    "Unable to parse AI response.",
                 ]
-
             }
+
+            result.overall_tips = ["Please try generating interview questions again."]
 
         return result

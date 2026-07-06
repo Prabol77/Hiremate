@@ -8,9 +8,7 @@ def load_theme():
     Load custom CSS.
     """
 
-    css = Path(
-        "styles/style.css"
-    ).read_text()
+    css = Path("styles/style.css").read_text()
 
     st.markdown(
         f"<style>{css}</style>",

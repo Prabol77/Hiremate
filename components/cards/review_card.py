@@ -5,46 +5,74 @@ from models.review_model import ReviewResult
 
 def render_review_card(
     review: ReviewResult,
-):
+) -> None:
     """
-    Render AI Resume Review.
+    Render the AI Resume Review section.
+
+    Args:
+        review:
+            AI-generated review results.
     """
 
     st.header("🤖 AI Resume Review")
 
-    st.info(
-        review.summary
-    )
+    # =====================================================
+    # Summary
+    # =====================================================
+
+    st.info(review.summary or "No review summary available.")
+
+    # =====================================================
+    # Strengths & Weaknesses
+    # =====================================================
 
     col1, col2 = st.columns(2)
 
-    with col1:
+    review_sections = [
+        (
+            col1,
+            "💪 Strengths",
+            review.strengths,
+            st.success,
+            "No strengths detected.",
+            st.warning,
+        ),
+        (
+            col2,
+            "⚠️ Weaknesses",
+            review.weaknesses,
+            st.error,
+            "No weaknesses detected.",
+            st.success,
+        ),
+    ]
 
-        st.subheader("💪 Strengths")
+    for (
+        column,
+        title,
+        items,
+        render_item,
+        empty_message,
+        render_empty,
+    ) in review_sections:
 
-        if review.strengths:
+        with column:
 
-            for item in review.strengths:
+            st.subheader(title)
 
-                st.success(item)
+            if items:
 
-        else:
+                for item in items:
 
-            st.warning("No strengths detected.")
+                    render_item(item)
 
-    with col2:
+            else:
 
-        st.subheader("⚠ Weaknesses")
+                render_empty(empty_message)
 
-        if review.weaknesses:
-
-            for item in review.weaknesses:
-
-                st.error(item)
-
-        else:
-
-            st.success("No weaknesses detected.")
+    # =====================================================
+    # Recommendations
+    # =====================================================
 
     st.divider()
 
@@ -54,12 +82,8 @@ def render_review_card(
 
         for recommendation in review.recommendations:
 
-            st.write(
-                f"• {recommendation}"
-            )
+            st.markdown(f"- {recommendation}")
 
     else:
 
-        st.success(
-            "Your resume is already well optimized."
-        )
+        st.success("Your resume is already well optimized.")

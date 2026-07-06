@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import Dict, List
 
 
 @dataclass
@@ -38,6 +38,10 @@ class Project:
 
 @dataclass
 class ResumeData:
+    """
+    Structured representation of a parsed resume.
+    """
+
     personal_info: PersonalInfo = field(default_factory=PersonalInfo)
 
     education: List[Education] = field(default_factory=list)
@@ -53,3 +57,7 @@ class ResumeData:
     achievements: List[str] = field(default_factory=list)
 
     languages: List[str] = field(default_factory=list)
+
+    # ⭐ New
+    # Stores the raw text of each detected resume section.
+    sections: Dict[str, str] = field(default_factory=dict)

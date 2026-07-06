@@ -8,10 +8,6 @@ class InterviewResult:
     Stores AI-generated interview questions.
     """
 
-    questions: Dict[str, List[str]] = field(
-        default_factory=dict
-    )
+    questions: Dict[str, List[str]] = field(default_factory=dict)
 
-    overall_tips: List[str] = field(
-        default_factory=list
-    )
+    overall_tips: List[str] = field(default_factory=list)
