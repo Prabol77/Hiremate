@@ -6,6 +6,7 @@ import streamlit as st
 
 from components.layout.sidebar import render_sidebar
 from styles.theme import load_theme
+
 from views.about import show_about
 from views.dashboard import show_dashboard
 from views.interview_prep import show_interview_prep

@@ -4,8 +4,10 @@ from dataclasses import dataclass
 @dataclass
 class RewriteResult:
     """
-    Stores AI-generated resume rewrite.
+    Represents the AI rewrite of a single resume section.
     """
+
+    section_name: str = ""
 
     original_text: str = ""
 

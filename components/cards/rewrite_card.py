@@ -7,54 +7,55 @@ def render_rewrite_card(
     rewrite: RewriteResult,
 ):
     """
-    Render AI Resume Rewrite.
+    Render AI Resume Rewrite results.
     """
 
     st.header("✨ AI Resume Rewrite")
 
-    st.write("Compare your original resume content with the AI-improved version.")
+    st.info(
+        f"Section: {rewrite.section_name}"
+    )
 
-    original_col, improved_col = st.columns(2)
+    col1, col2 = st.columns(2)
 
-    # ======================================================
-    # Original
-    # ======================================================
-
-    with original_col:
+    with col1:
 
         st.subheader("📄 Original")
 
         st.text_area(
-            "",
-            rewrite.original_text,
-            height=220,
+            label="Original Resume Section",
+            value=rewrite.original_text,
+            height=250,
             disabled=True,
-            key="original_resume",
         )
 
-    # ======================================================
-    # Improved
-    # ======================================================
+    with col2:
 
-    with improved_col:
-
-        st.subheader("🚀 AI Improved")
+        st.subheader("🚀 Improved")
 
         st.text_area(
-            "",
-            rewrite.improved_text,
-            height=220,
-            disabled=True,
-            key="improved_resume",
+            label="Improved Resume Section",
+            value=rewrite.improved_text,
+            height=250,
         )
 
     st.divider()
 
-    st.subheader("💡 Why This Is Better")
+    st.subheader("🧠 Why this rewrite is better")
 
-    st.info(rewrite.explanation)
+    st.success(
+        rewrite.explanation
+    )
 
     st.metric(
         "Estimated ATS Improvement",
         rewrite.estimated_improvement,
+    )
+
+    st.download_button(
+        label="📄 Download Improved Section",
+        data=rewrite.improved_text,
+        file_name=f"{rewrite.section_name}_rewrite.txt",
+        mime="text/plain",
+        use_container_width=True,
     )

@@ -1,17 +1,44 @@
+"""
+Resume Preview Card.
+
+Displays a preview of the extracted resume text.
+"""
+
 import streamlit as st
 
-from config import MAX_PREVIEW_CHARS
+
+# ==========================================================
+# Resume Preview Card
+# ==========================================================
 
 
-def render_preview_card(text):
+def render_preview_card(
+    text: str,
+):
     """
-    Resume Preview.
+    Render a preview of the extracted resume text.
+
+    Args:
+        text (str):
+            Extracted resume text.
     """
 
-    with st.expander("📄 Resume Preview"):
+    st.subheader("📄 Resume Preview")
+
+    with st.expander(
+        "View Extracted Resume",
+        expanded=False,
+    ):
 
         st.text_area(
-            "",
-            value=text[:MAX_PREVIEW_CHARS],
+            label="Resume Content",
+            value=text[:3000],
             height=350,
+            disabled=True,
         )
+
+        if len(text) > 3000:
+
+            st.caption(
+                "Only the first 3,000 characters are displayed."
+            )

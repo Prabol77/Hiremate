@@ -4,9 +4,14 @@ from models.recommendation_model import RecommendationResult
 from models.review_model import ReviewResult
 from models.rewrite_model import RewriteResult
 from services.groq_service import GroqService
-from utils.prompts import (RECOMMENDATION_SYSTEM_PROMPT, REVIEW_SYSTEM_PROMPT,
-                           REWRITE_SYSTEM_PROMPT, recommendation_prompt,
-                           review_prompt, rewrite_prompt)
+from utils.prompts import (
+    RECOMMENDATION_SYSTEM_PROMPT,
+    REVIEW_SYSTEM_PROMPT,
+    REWRITE_SYSTEM_PROMPT,
+    recommendation_prompt,
+    review_prompt,
+    rewrite_prompt,
+)
 
 
 class AIService:
@@ -93,7 +98,7 @@ class AIService:
         jd_text: str,
     ) -> RewriteResult:
         """
-        Rewrite a specific resume section.
+        Rewrite a specific resume section using AI.
         """
 
         prompt = rewrite_prompt(
@@ -108,6 +113,8 @@ class AIService:
         )
 
         result = RewriteResult()
+
+        result.section_name = section_name
 
         try:
 
@@ -136,11 +143,10 @@ class AIService:
         except Exception:
 
             result.original_text = section_text
-
             result.improved_text = response
-
-            result.explanation = "Unable to parse AI response."
-
+            result.explanation = (
+                "Unable to parse AI response."
+            )
             result.estimated_improvement = "N/A"
 
         return result
@@ -197,11 +203,8 @@ class AIService:
         except Exception:
 
             result.ats_optimization = []
-
             result.skills_to_learn = []
-
             result.resume_improvements = []
-
             result.next_steps = []
 
         return result
