@@ -17,6 +17,9 @@ from components.layout.hero_section import render_hero_section
 from components.widgets.empty_state import render_empty_state
 from components.widgets.error_card import render_error_card
 
+from views.dashboard_modules.tabs.cover_letter import (
+    render_cover_letter_tab,
+)
 from views.dashboard_modules.upload import (
     render_upload_section,
 )
@@ -121,6 +124,7 @@ def show_dashboard():
             recommendation_tab,
             interview_tab,
             rewrite_tab,
+            cover_letter_tab,
             candidate_tab,
         ) = st.tabs(
             [
@@ -130,6 +134,7 @@ def show_dashboard():
                 "💡 Recommendations",
                 "🎤 Interview",
                 "✨ Rewrite",
+                "📄 Cover Letter",
                 "👤 Candidate",
             ]
         )
@@ -175,6 +180,13 @@ def show_dashboard():
                 resume_data,
                 jd_text,
             )
+        with cover_letter_tab:
+
+            render_cover_letter_tab(
+                resume_text,
+                jd_text,
+            )
+
 
         with candidate_tab:
 
