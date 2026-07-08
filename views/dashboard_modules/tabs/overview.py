@@ -1,44 +1,40 @@
 """
-Overview Dashboard Tab.
+HireMate Overview Dashboard.
 
 Responsibilities:
-- Resume statistics
-- ATS score
-- Summary metrics
-- Charts
-- PDF export
+- ATS Metrics
+- Resume Summary
+- Skills Overview
+- AI Review Preview
+- Recommendation Preview
+- Export Report
 """
-
-from components.cards.ats_card import (
-    render_ats_card,
+# from components.dashboard.export_report import (
+#     render_export_report,
+# )
+from components.dashboard.ats_metrics import (
+    render_ats_metrics,
 )
 
-from components.cards.statistics_card import (
-    render_statistics_card,
-)
-
-from components.cards.summary_card import (
+from components.dashboard.summary_card import (
     render_summary_card,
 )
 
-from components.charts.gauge_chart import (
-    render_gauge,
+from components.dashboard.skills_overview import (
+    render_skills_overview,
 )
 
-from components.charts.skill_chart import (
-    render_skill_chart,
+from components.dashboard.review_overview import (
+    render_review_overview,
 )
 
-from components.export_button import (
-    render_export_button,
+from components.dashboard.recommendation_overview import (
+    render_recommendation_overview,
 )
 
-import streamlit as st
-
-
-# ==========================================================
-# Overview Tab
-# ==========================================================
+from components.dashboard.export_report import (
+    render_export_report,
+)
 
 
 def render_overview_tab(
@@ -48,73 +44,95 @@ def render_overview_tab(
     review,
     recommendations,
     interview,
+    cover_letter,
 ):
     """
-    Render the Overview dashboard tab.
+    Render the HireMate Overview Dashboard.
     """
 
-    left, right = st.columns(2)
+    # ======================================================
+    # ATS Metrics
+    # ======================================================
 
-    # ------------------------------------------------------
-    # Statistics
-    # ------------------------------------------------------
+    render_ats_metrics(
 
-    with left:
+        ats_score=ats_result.overall_score,
 
-        render_statistics_card(
-            resume_pdf,
-        )
+        matched_skills=len(
+            ats_result.matched_skills,
+        ),
 
-    # ------------------------------------------------------
-    # ATS Score
-    # ------------------------------------------------------
+        missing_skills=len(
+            ats_result.missing_skills,
+        ),
 
-    with right:
+        resume_quality=(
+            "Excellent"
+            if ats_result.overall_score >= 85
+            else
+            "Good"
+            if ats_result.overall_score >= 70
+            else
+            "Needs Improvement"
+        ),
 
-        render_ats_card(
-            ats_result.overall_score,
-        )
+    )
 
-    st.divider()
-
-    # ------------------------------------------------------
-    # Summary
-    # ------------------------------------------------------
+    # ======================================================
+    # Resume Summary
+    # ======================================================
 
     render_summary_card(
-        ats_result,
+
+        review.summary,
+
     )
 
-    st.divider()
+    # ======================================================
+    # Skills Overview
+    # ======================================================
 
-    # ------------------------------------------------------
-    # Charts
-    # ------------------------------------------------------
+    render_skills_overview(
 
-    chart_left, chart_right = st.columns(2)
+        ats_result.matched_skills,
 
-    with chart_left:
+        ats_result.missing_skills,
 
-        render_gauge(
-            ats_result.overall_score,
-        )
+    )
 
-    with chart_right:
+    # ======================================================
+    # Review Overview
+    # ======================================================
 
-        render_skill_chart(
-            ats_result,
-        )
+    render_review_overview(
 
-    st.divider()
-
-    # ------------------------------------------------------
-    # Export
-    # ------------------------------------------------------
-
-    render_export_button(
-        resume_data,
-        ats_result,
         review,
-        recommendations,
-        interview,
+
     )
+
+    # ======================================================
+    # Recommendation Overview
+    # ======================================================
+
+    render_recommendation_overview(
+
+        recommendations,
+
+    )
+
+    # ======================================================
+    # Export Report
+    # ======================================================
+
+    # render_export_report(
+    #     candidate_name=getattr(
+    #         resume_data,
+    #         "name",
+    #         "Unknown Candidate",
+    #     ),
+    #     ats_result=ats_result,
+    #     review=review,
+    #     recommendations=recommendations,
+    #     interview=interview,
+    #     cover_letter=cover_letter,
+    # )

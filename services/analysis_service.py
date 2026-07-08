@@ -34,6 +34,7 @@ class AnalysisService:
         self.interview_service = InterviewService()
 
     def analyze(
+            
         self,
         resume_text: str,
         jd_text: str,
@@ -42,57 +43,70 @@ class AnalysisService:
         Execute the complete HireMate analysis pipeline.
         """
 
-        # ==========================================
-        # Resume Parsing
-        # ==========================================
+    # ==========================================
+    # Resume Parsing
+    # ==========================================
 
-        resume_data = self.resume_service.parse(resume_text)
+        resume_data = self.resume_service.parse(
+            resume_text,
+        )
 
-        # ==========================================
-        # Job Description Parsing
-        # ==========================================
+    # ==========================================
+    # Job Description Parsing
+    # ==========================================
 
-        job_data = self.jd_service.parse(jd_text)
+        job_data = self.jd_service.parse(
+            jd_text,
+        )
 
-        # ==========================================
-        # ATS Matching
-        # ==========================================
+    # ==========================================
+    # ATS Matching
+    # ==========================================
 
         ats_result = self.ats_service.compare(
             resume_data,
             job_data,
         )
 
-        # ==========================================
-        # AI Resume Review
-        # ==========================================
+    # ==========================================
+    # AI Resume Review
+    # ==========================================
 
         review = self.ai_service.generate_review(
             resume_text,
             jd_text,
         )
 
-        # ==========================================
-        # AI Recommendations
-        # ==========================================
+    # ==========================================
+    # AI Recommendations
+    # ==========================================
 
         recommendations = self.ai_service.generate_recommendations(
             resume_text,
             jd_text,
         )
 
-        # ==========================================
-        # AI Interview Questions
-        # ==========================================
+    # ==========================================
+    # AI Interview Questions
+    # ==========================================
 
         interview = self.interview_service.generate(
             resume_text,
             jd_text,
         )
 
-        # ==========================================
-        # Return Complete Analysis
-        # ==========================================
+    # ==========================================
+    # AI Cover Letter
+    # ==========================================
+
+        cover_letter = self.ai_service.generate_cover_letter(
+            resume_text,
+            jd_text,
+        )
+
+    # ==========================================
+    # Return Complete Analysis
+    # ==========================================
 
         return (
             resume_data,
@@ -101,4 +115,5 @@ class AnalysisService:
             review,
             recommendations,
             interview,
+            cover_letter,
         )

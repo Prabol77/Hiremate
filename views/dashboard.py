@@ -96,7 +96,9 @@ def show_dashboard():
             review,
             recommendations,
             interview,
+            cover_letter,
         ) = analysis
+        import streamlit as st
 
         if st.button(
             "🔄 Start New Analysis",
@@ -148,6 +150,7 @@ def show_dashboard():
                 review,
                 recommendations,
                 interview,
+                cover_letter,
             )
 
         with skills_tab:
@@ -183,8 +186,7 @@ def show_dashboard():
         with cover_letter_tab:
 
             render_cover_letter_tab(
-                resume_text,
-                jd_text,
+                cover_letter,
             )
 
 

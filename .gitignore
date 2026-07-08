@@ -29,3 +29,11 @@ Thumbs.db
 
 # Logs
 *.log
+
+uploads/
+generated_reports/
+temp/
+
+uploads/
+generated_reports/
+temp/

@@ -1,6 +1,11 @@
 import re
 
-from models.resume_model import ResumeData
+from models.resume_model import (
+    ResumeData,
+    Education,
+    Experience,
+    Project,
+)
 from services.skill_service import SkillService
 
 
@@ -199,11 +204,147 @@ class ResumeService:
                 continue
 
             self.resume.sections[current_section] += cleaned + "\n"
+    def extract_education(self):
+        """
+        Parse education section.
+        """
 
+        section = self.resume.sections.get(
+            "education",
+            "",
+        )
+
+        if not section:
+            return
+
+        for line in section.splitlines():
+
+            line = line.strip()
+
+            if line:
+
+                self.resume.education.append(
+                    Education(
+                        degree=line,
+                   )
+                )
+    def extract_experience(self):
+        """
+        Parse experience section.
+        """
+
+        section = self.resume.sections.get(
+            "experience",
+            "",
+        )
+
+        if not section:
+            return
+
+        for line in section.splitlines():
+
+            line = line.strip()
+
+            if line:
+
+                self.resume.experience.append(
+                    Experience(
+                        company=line,
+                    )
+                )
+    def extract_projects(self):
+        """
+        Parse project section.
+        """
+
+        section = self.resume.sections.get(
+            "projects",
+            "",
+        )
+
+        if not section:
+            return
+
+        for line in section.splitlines():
+
+            line = line.strip()
+
+            if line:
+
+                self.resume.projects.append(
+                    Project(
+                        title=line,
+                    )
+                )
+    def extract_languages(self):
+        """
+        Parse languages.
+        """
+
+        section = self.resume.sections.get(
+            "languages",
+            "",
+        )
+
+        if not section:
+            return
+
+        for line in section.splitlines():
+
+            line = line.strip()
+
+            if line:
+
+                self.resume.languages.append(
+                    line,
+                )
+    def extract_achievements(self):
+        """
+        Parse achievements.
+        """
+
+        section = self.resume.sections.get(
+            "achievements",
+            "",
+        )
+
+        if not section:
+            return
+
+        for line in section.splitlines():
+
+            line = line.strip()
+
+            if line:
+
+                self.resume.achievements.append(
+                    line,
+                )
+    def extract_certifications(self):
+        """
+        Parse certifications section.
+        """
+
+        section = self.resume.sections.get(
+            "certifications",
+            "",
+        )
+
+        if not section:
+            return
+
+        for line in section.splitlines():
+
+            line = line.strip()
+
+            if line:
+
+                self.resume.certifications.append(
+                    line,
+                )
     # =====================================================
     # Main Parser
     # =====================================================
-
     def parse(
         self,
         text: str,
@@ -211,9 +352,8 @@ class ResumeService:
         """
         Parse resume text into structured ResumeData.
         """
-
         self.resume = ResumeData()
-
+        
         self.extract_name(text)
 
         self.extract_email(text)
@@ -221,6 +361,18 @@ class ResumeService:
         self.extract_phone(text)
 
         self.extract_sections(text)
+
+        self.extract_education()
+
+        self.extract_experience()
+
+        self.extract_projects()
+
+        self.extract_certifications()
+
+        self.extract_languages()
+
+        self.extract_achievements()
 
         self.resume.skills = self.skill_service.extract_skills(text)
 

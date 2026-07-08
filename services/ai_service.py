@@ -34,6 +34,47 @@ class AIService:
     def __init__(self):
         self.groq = GroqService()
 
+# ======================================================
+# Internal Helpers
+# ======================================================
+
+    def _chat(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+    ) -> str:
+        """
+        Send a prompt to Groq.
+        """
+
+        return self.groq.chat(
+            system_prompt,
+            user_prompt,
+        )
+
+
+    def _generate_json(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+    ) -> dict:
+        """
+        Generate and parse JSON.
+        """
+
+        from utils.json_parser import (
+            parse_llm_json,
+        )
+
+        response = self._chat(
+            system_prompt,
+            user_prompt,
+        )
+
+        return parse_llm_json(
+            response,
+        )
+
     # ======================================================
     # Resume Review
     # ======================================================

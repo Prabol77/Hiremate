@@ -1,119 +1,74 @@
-import streamlit as st
+"""
+Cover Letter Tab.
 
-from services.ai_service import AIService
+Displays the AI-generated cover letter
+and provides export options.
+"""
 
-from components.cards.cover_letter_card import (
-    render_cover_letter_card,
+from models.cover_letter_model import (
+    CoverLetterResult,
+)
+
+from services.export_service import (
+    ExportService,
+)
+
+from components.ui.section_header import (
+    render_section_header,
+)
+
+from components.ui.document_preview import (
+    render_document_preview,
+)
+
+from components.ui.action_bar import (
+    render_action_bar,
 )
 
 
-@st.cache_resource
-def get_ai_service():
-    """
-    Return a cached AI service instance.
-    """
-
-    return AIService()
-
-
-# ==========================================================
-# Cover Letter Tab
-# ==========================================================
-
-
 def render_cover_letter_tab(
-    resume_text: str,
-    jd_text: str,
+    cover_letter: CoverLetterResult,
 ):
     """
-    Render the AI Cover Letter dashboard tab.
+    Render the Cover Letter tab.
     """
 
-    st.header("📄 AI Cover Letter Generator")
-
-    st.write(
-        """
-Generate a personalized, ATS-friendly cover letter
-tailored to the uploaded resume and job description.
-"""
+    render_section_header(
+        "📄 AI Cover Letter",
+        "Professionally generated cover letter based on your resume and the job description.",
     )
 
-    # ------------------------------------------------------
-    # Style Selection
-    # ------------------------------------------------------
+    if not cover_letter or not cover_letter.full_letter:
 
-    style = st.radio(
-        "Choose Cover Letter Style",
-        (
-            "Professional",
-            "Modern",
-            "Concise",
-        ),
-        horizontal=True,
-    )
-
-    st.divider()
-
-    ai_service = get_ai_service()
-
-    # ------------------------------------------------------
-    # Generate
-    # ------------------------------------------------------
-
-    generate = st.button(
-        "🚀 Generate Cover Letter",
-        use_container_width=True,
-    )
-
-    if generate:
-
-        with st.spinner(
-            "Generating cover letter..."
-        ):
-
-            result = ai_service.generate_cover_letter(
-                resume_text,
-                jd_text,
-                style,
-            )
-
-        st.session_state["cover_letter"] = result
-
-    # ------------------------------------------------------
-    # Regenerate
-    # ------------------------------------------------------
-
-    if "cover_letter" in st.session_state:
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-
-            if st.button(
-                "🔄 Regenerate",
-                use_container_width=True,
-            ):
-
-                with st.spinner(
-                    "Generating another version..."
-                ):
-
-                    st.session_state["cover_letter"] = (
-                        ai_service.generate_cover_letter(
-                            resume_text,
-                            jd_text,
-                            style,
-                        )
-                    )
-
-        with col2:
-
-            st.success(
-                "Cover letter ready."
-            )
-
-        st.divider()
-
-        render_cover_letter_card(
-            st.session_state["cover_letter"]
+        render_document_preview(
+            "Cover Letter",
+            "No cover letter generated.",
         )
+
+        return
+
+    render_document_preview(
+        "Cover Letter",
+        cover_letter.full_letter,
+    )
+
+    txt_data = ExportService.export_txt(
+        cover_letter.full_letter,
+    )
+
+    docx_data = ExportService.export_docx(
+        "HireMate Cover Letter",
+        cover_letter.full_letter,
+    )
+
+    pdf_data = ExportService.export_pdf(
+        "HireMate Cover Letter",
+        cover_letter.full_letter,
+    )
+
+    render_action_bar(
+        txt_data=txt_data,
+        docx_data=docx_data,
+        pdf_data=pdf_data,
+        base_filename="HireMate_Cover_Letter",
+    )

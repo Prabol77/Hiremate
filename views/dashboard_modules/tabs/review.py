@@ -1,50 +1,21 @@
 """
-Review Dashboard Tab.
-
-Responsibilities:
-- Display AI-generated resume review
+Review Tab.
 """
-
-import streamlit as st
 
 from models.review_model import ReviewResult
 
-from components.cards.review_card import (
-    render_review_card,
+from components.dashboard.review_details import (
+    render_review_details,
 )
-
-
-# ==========================================================
-# Review Tab
-# ==========================================================
 
 
 def render_review_tab(
     review: ReviewResult,
 ):
     """
-    Render the AI Resume Review dashboard tab.
+    Render AI review tab.
     """
 
-    render_review_card(
+    render_review_details(
         review,
-    )
-
-    st.divider()
-
-    if review.summary:
-
-        st.success(
-            "AI review generated successfully."
-        )
-
-    else:
-
-        st.warning(
-            "No review was generated."
-        )
-
-    st.caption(
-        "The review is generated using AI by comparing your "
-        "resume against the uploaded job description."
     )

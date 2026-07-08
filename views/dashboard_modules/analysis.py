@@ -43,6 +43,7 @@ def get_cached_analysis(
         review,
         recommendations,
         interview,
+        cover_letter,
     )
     """
 
@@ -107,6 +108,7 @@ def get_cached_analysis(
         review,
         recommendations,
         interview,
+        cover_letter,
     ) = analysis.analyze(
         resume_text,
         jd_text,
@@ -127,6 +129,7 @@ def get_cached_analysis(
         review,
         recommendations,
         interview,
+        cover_letter,
     )
 
     session.save_analysis(

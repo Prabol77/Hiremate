@@ -69,6 +69,7 @@ class ReportService:
         review,
         recommendations,
         interview,
+        cover_letter,
     ):
         """
         Generate PDF report.

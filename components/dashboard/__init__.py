@@ -1,0 +1,3 @@
+"""
+HireMate Dashboard Components.
+"""
