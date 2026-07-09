@@ -1,5 +1,5 @@
 """
-Dashboard Interview Details.
+Interview Questions.
 """
 
 import streamlit as st
@@ -8,110 +8,34 @@ from components.ui.section_header import (
     render_section_header,
 )
 
-from components.ui.status_badge import (
-    render_status_badge,
-)
 
-
-# ==========================================================
-# Helpers
-# ==========================================================
-
-def _render_question_group(
-    title: str,
-    questions: list[str],
-):
-    """
-    Render one interview question category.
-    """
-
-    st.subheader(title)
-
-    if questions:
-
-        for index, question in enumerate(
-            questions,
-            start=1,
-        ):
-
-            st.markdown(
-                f"**{index}.** {question}"
-            )
-
-    else:
-
-        render_status_badge(
-            "info",
-            "No questions generated.",
-        )
-
-    st.divider()
-
-
-# ==========================================================
-# Main Renderer
-# ==========================================================
-
-def render_interview_details(
-    interview,
-):
-    """
-    Render interview preparation section.
-    """
+def render_interview_details(interview):
 
     render_section_header(
         "🎤 Interview Preparation",
-        "Practice AI-generated interview questions tailored to your resume and job description.",
+        "Personalized interview questions.",
     )
 
-    questions = getattr(
-        interview,
-        "questions",
-        {},
-    ) or {}
+    if not interview.questions:
 
-    if not questions:
-
-        render_status_badge(
-            "warning",
-            "No interview questions available.",
-        )
+        st.info("No interview questions generated.")
 
         return
 
-    # Automatically render every category
-    for category, question_list in questions.items():
+    for category, questions in interview.questions.items():
 
-        icon = {
-            "Technical": "💻",
-            "Programming": "⌨️",
-            "Projects": "🚀",
-            "Behavioral": "🧠",
-            "HR": "🤝",
-        }.get(category, "📌")
+        st.subheader(category)
 
-        _render_question_group(
-            f"{icon} {category} Questions",
-            question_list,
-        )
+        for question in questions:
 
-    # ======================================================
-    # Interview Tips
-    # ======================================================
+            st.markdown(f"• {question}")
 
-    tips = getattr(
-        interview,
-        "overall_tips",
-        [],
-    )
+        st.divider()
 
-    if tips:
+    if interview.overall_tips:
 
-        st.subheader("💡 Interview Tips")
+        st.subheader("💡 Overall Tips")
 
-        for tip in tips:
+        for tip in interview.overall_tips:
 
-            render_status_badge(
-                "success",
-                tip,
-            )
+            st.info(tip)

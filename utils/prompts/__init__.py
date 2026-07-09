@@ -3,7 +3,7 @@ from .cover_letter_prompt import (
     cover_letter_prompt,
 )
 
-from .interview_prompt import (
+from ..interview_prompt import (
     INTERVIEW_SYSTEM_PROMPT,
     interview_prompt,
 )

@@ -2,18 +2,34 @@
 HireMate Overview Dashboard.
 
 Responsibilities:
-- ATS Metrics
-- Resume Summary
-- Skills Overview
-- AI Review Preview
-- Recommendation Preview
-- Export Report
+- Dashboard Header
+- Hero Metrics
+- Resume Analytics
+- Recruiter Assessment
+- AI Insights
+- Resume Strength
 """
-# from components.dashboard.export_report import (
-#     render_export_report,
-# )
-from components.dashboard.ats_metrics import (
-    render_ats_metrics,
+
+import streamlit as st
+
+from components.ui.metric_card_v2 import (
+    render_metric_card_v2,
+)
+
+from components.charts.ats_gauge import (
+    render_ats_gauge,
+)
+
+from components.charts.skills_donut import (
+    render_skills_donut,
+)
+
+from components.dashboard.ats_breakdown import (
+    render_ats_breakdown,
+)
+
+from components.dashboard.recruiter_panel import (
+    render_recruiter_panel,
 )
 
 from components.dashboard.summary_card import (
@@ -32,8 +48,8 @@ from components.dashboard.recommendation_overview import (
     render_recommendation_overview,
 )
 
-from components.dashboard.export_report import (
-    render_export_report,
+from components.dashboard.resume_strength import (
+    render_resume_strength,
 )
 
 
@@ -47,92 +63,175 @@ def render_overview_tab(
     cover_letter,
 ):
     """
-    Render the HireMate Overview Dashboard.
+    Render HireMate Overview Dashboard.
     """
 
-    # ======================================================
-    # ATS Metrics
-    # ======================================================
+    # =====================================================
+    # Header
+    # =====================================================
 
-    render_ats_metrics(
+    st.title("🤖 HireMate Dashboard")
 
-        ats_score=ats_result.overall_score,
+    st.caption(
+        "AI-powered resume analysis and career insights."
+    )
 
-        matched_skills=len(
-            ats_result.matched_skills,
-        ),
+    st.divider()
 
-        missing_skills=len(
-            ats_result.missing_skills,
-        ),
+    # =====================================================
+    # Hero Metrics
+    # =====================================================
 
-        resume_quality=(
-            "Excellent"
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+
+        render_metric_card_v2(
+            icon="🎯",
+            title="ATS Score",
+            value=f"{ats_result.overall_score:.0f}%",
+            subtitle="Resume Match",
+        )
+
+    with col2:
+
+        render_metric_card_v2(
+            icon="✅",
+            title="Matched Skills",
+            value=str(len(ats_result.matched_skills)),
+            subtitle="Skills Found",
+        )
+
+    with col3:
+
+        render_metric_card_v2(
+            icon="⚠️",
+            title="Missing Skills",
+            value=str(len(ats_result.missing_skills)),
+            subtitle="Need Improvement",
+        )
+
+    with col4:
+
+        grade = (
+            "A+"
             if ats_result.overall_score >= 85
-            else
-            "Good"
+            else "B+"
             if ats_result.overall_score >= 70
-            else
-            "Needs Improvement"
-        ),
+            else "C"
+        )
 
+        render_metric_card_v2(
+            icon="⭐",
+            title="Resume Grade",
+            value=grade,
+            subtitle="Overall Quality",
+        )
+
+    st.divider()
+
+    # =====================================================
+    # Resume Analytics
+    # =====================================================
+
+    st.subheader("📊 Resume Analytics")
+
+    chart1, chart2 = st.columns(2)
+
+    with chart1:
+
+        render_ats_gauge(
+            ats_result.overall_score,
+        )
+
+    with chart2:
+
+        render_skills_donut(
+            len(ats_result.matched_skills),
+            len(ats_result.missing_skills),
+        )
+
+    st.divider()
+
+    render_ats_breakdown(
+        ats_result,
     )
 
-    # ======================================================
-    # Resume Summary
-    # ======================================================
+    st.divider()
 
-    render_summary_card(
+    # =====================================================
+    # Recruiter Assessment
+    # =====================================================
 
-        review.summary,
-
+    render_recruiter_panel(
+        resume_data,
+        ats_result,
     )
 
-    # ======================================================
-    # Skills Overview
-    # ======================================================
+    st.divider()
 
-    render_skills_overview(
+    # =====================================================
+    # AI Summary & Skills
+    # =====================================================
 
-        ats_result.matched_skills,
-
-        ats_result.missing_skills,
-
+    left, right = st.columns(
+        [2, 1],
+        gap="large",
     )
 
-    # ======================================================
-    # Review Overview
-    # ======================================================
+    with left:
 
-    render_review_overview(
+        render_summary_card(
+            review.summary,
+        )
 
-        review,
+    with right:
 
+        render_skills_overview(
+            ats_result.matched_skills,
+            ats_result.missing_skills,
+        )
+
+    st.divider()
+
+    # =====================================================
+    # AI Review & Recommendations
+    # =====================================================
+
+    left, right = st.columns(
+        [2, 1],
+        gap="large",
     )
 
-    # ======================================================
-    # Recommendation Overview
-    # ======================================================
+    with left:
 
-    render_recommendation_overview(
+        render_review_overview(
+            review,
+        )
 
-        recommendations,
+    with right:
 
+        render_recommendation_overview(
+            recommendations,
+        )
+
+    st.divider()
+
+    # =====================================================
+    # Resume Strength
+    # =====================================================
+
+    render_resume_strength(
+        resume_data,
+        ats_result,
     )
 
-    # ======================================================
-    # Export Report
-    # ======================================================
+    st.divider()
 
-    # render_export_report(
-    #     candidate_name=getattr(
-    #         resume_data,
-    #         "name",
-    #         "Unknown Candidate",
-    #     ),
-    #     ats_result=ats_result,
-    #     review=review,
-    #     recommendations=recommendations,
-    #     interview=interview,
-    #     cover_letter=cover_letter,
-    # )
+    # =====================================================
+    # Footer
+    # =====================================================
+
+    st.caption(
+        "HireMate v0.6 • AI Resume Intelligence Dashboard"
+    )

@@ -1,19 +1,48 @@
 from dataclasses import dataclass, field
+
 from typing import List
 
 
 @dataclass
 class ATSResult:
     """
-    Stores ATS matching results.
+    Stores ATS evaluation results.
     """
 
     overall_score: float = 0.0
 
-    matched_skills: List[str] = field(default_factory=list)
+    # Individual scores
 
-    missing_skills: List[str] = field(default_factory=list)
+    skills_score: float = 0.0
 
-    additional_skills: List[str] = field(default_factory=list)
+    experience_score: float = 0.0
 
-    recommendations: List[str] = field(default_factory=list)
+    projects_score: float = 0.0
+
+    education_score: float = 0.0
+
+    completeness_score: float = 0.0
+
+    # Skills
+
+    matched_skills: List[str] = field(
+        default_factory=list
+    )
+
+    missing_skills: List[str] = field(
+        default_factory=list
+    )
+
+    # AI Explanation
+
+    strengths: List[str] = field(
+        default_factory=list
+    )
+
+    weaknesses: List[str] = field(
+        default_factory=list
+    )
+
+    recommendations: List[str] = field(
+        default_factory=list
+    )

@@ -1,14 +1,19 @@
 import json
+import re
 
 from models.interview_model import InterviewResult
+
 from services.groq_service import GroqService
-from utils.prompts import INTERVIEW_SYSTEM_PROMPT, interview_prompt
+
+from utils.interview_prompt import (
+    INTERVIEW_SYSTEM_PROMPT,
+    interview_prompt,
+)
 
 
 class InterviewService:
     """
-    Generates AI-powered interview questions based on
-    the candidate's resume and job description.
+    Generate AI interview questions.
     """
 
     def __init__(self):
@@ -16,23 +21,54 @@ class InterviewService:
         self.groq = GroqService()
 
     # =====================================================
-    # Interview Question Generation
+
+    def _extract_json(
+        self,
+        response: str,
+    ):
+        """
+        Extract JSON from AI response.
+        """
+
+        response = response.strip()
+
+        # Remove markdown fences
+        response = re.sub(
+            r"^```(?:json)?",
+            "",
+            response,
+            flags=re.IGNORECASE,
+        )
+
+        response = re.sub(
+            r"```$",
+            "",
+            response,
+        ).strip()
+
+        # Find JSON object
+        match = re.search(
+            r"\{.*\}",
+            response,
+            flags=re.DOTALL,
+        )
+
+        if match:
+
+            response = match.group(0)
+
+        return json.loads(response)
+
     # =====================================================
 
     def generate(
         self,
-        resume_text: str,
+        resume_data,
         jd_text: str,
     ) -> InterviewResult:
-        """
-        Generate categorized interview questions.
-
-        Returns:
-            InterviewResult
-        """
 
         prompt = interview_prompt(
-            resume_text,
+            resume_data,
             jd_text,
         )
 
@@ -40,12 +76,17 @@ class InterviewService:
             INTERVIEW_SYSTEM_PROMPT,
             prompt,
         )
+        print("\n========== GROQ RESPONSE ==========")
+        print(response)
+        print("===================================\n")
 
         result = InterviewResult()
 
         try:
 
-            data = json.loads(response)
+            data = self._extract_json(
+                response,
+            )
 
             result.questions = data.get(
                 "questions",
@@ -57,14 +98,22 @@ class InterviewService:
                 [],
             )
 
-        except json.JSONDecodeError:
+        except Exception as e:
+
+            print("Interview Parser Error:")
+            print(e)
+
+            print("\nRaw Response:\n")
+            print(response)
 
             result.questions = {
                 "AI Response": [
-                    "Unable to parse AI response.",
+                    "Unable to parse AI response."
                 ]
             }
 
-            result.overall_tips = ["Please try generating interview questions again."]
+            result.overall_tips = [
+                "Please try generating interview questions again."
+            ]
 
         return result

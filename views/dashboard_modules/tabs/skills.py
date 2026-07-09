@@ -4,7 +4,7 @@ Skills Dashboard Tab.
 Responsibilities:
 - Display matched skills
 - Display missing skills
-- Display additional skills
+- Display skill statistics
 """
 
 import streamlit as st
@@ -28,7 +28,7 @@ def render_skills_tab(
     Render the Skills dashboard tab.
     """
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     # ------------------------------------------------------
     # Matched Skills
@@ -37,7 +37,7 @@ def render_skills_tab(
     with col1:
 
         render_skills_card(
-            title="Matched Skills",
+            title="✅ Matched Skills",
             skills=ats_result.matched_skills,
             status="success",
         )
@@ -49,30 +49,59 @@ def render_skills_tab(
     with col2:
 
         render_skills_card(
-            title="Missing Skills",
+            title="❌ Missing Skills",
             skills=ats_result.missing_skills,
             status="error",
-        )
-
-    # ------------------------------------------------------
-    # Additional Skills
-    # ------------------------------------------------------
-
-    with col3:
-
-        render_skills_card(
-            title="Additional Skills",
-            skills=ats_result.additional_skills,
-            status="info",
         )
 
     st.divider()
 
     # ------------------------------------------------------
-    # Summary
+    # Statistics
     # ------------------------------------------------------
 
+    st.subheader("📊 Skill Statistics")
+
+    stat1, stat2, stat3 = st.columns(3)
+
+    with stat1:
+
+        st.metric(
+            "Matched",
+            len(ats_result.matched_skills),
+        )
+
+    with stat2:
+
+        st.metric(
+            "Missing",
+            len(ats_result.missing_skills),
+        )
+
+    with stat3:
+
+        total = (
+            len(ats_result.matched_skills)
+            + len(ats_result.missing_skills)
+        )
+
+        match_rate = (
+            round(
+                len(ats_result.matched_skills)
+                / total
+                * 100,
+            )
+            if total
+            else 100
+        )
+
+        st.metric(
+            "Match Rate",
+            f"{match_rate}%",
+        )
+
+    st.divider()
+
     st.caption(
-        "These skills were extracted automatically by comparing "
-        "your resume against the uploaded job description."
+        "Skills were automatically extracted by comparing your resume with the uploaded job description."
     )

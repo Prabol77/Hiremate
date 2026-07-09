@@ -1,99 +1,168 @@
-from models.ats_model import ATSResult
+"""
+Recommendation Service.
+"""
+
 from models.recommendation_model import RecommendationResult
 
 
 class RecommendationService:
     """
-    Generates rule-based recommendations from ATS results.
-
-    These recommendations complement the AI-generated
-    recommendations and provide immediate feedback based
-    on ATS matching.
+    Generates personalized recommendations based on
+    resume metadata and ATS analysis.
     """
 
     def generate(
         self,
-        ats_result: ATSResult,
+        resume_data,
+        ats_result,
     ) -> RecommendationResult:
-        """
-        Generate recommendation categories using ATS analysis.
-        """
 
-        recommendations = RecommendationResult()
+        result = RecommendationResult()
 
-        # =====================================================
-        # ATS Optimization
-        # =====================================================
-
-        if ats_result.overall_score >= 80:
-
-            recommendations.ats_optimization.append(
-                "Excellent ATS compatibility. Continue tailoring your resume for each application."
-            )
-
-        elif ats_result.overall_score >= 60:
-
-            recommendations.ats_optimization.extend(
-                [
-                    "Improve ATS compatibility by adding missing keywords from the job description.",
-                    "Match your resume wording with the terminology used in the job posting.",
-                ]
-            )
-
-        else:
-
-            recommendations.ats_optimization.extend(
-                [
-                    "Your ATS score is low. Focus on aligning your resume with the required skills.",
-                    "Include more relevant keywords from the job description.",
-                ]
-            )
-
-        # =====================================================
-        # Skills to Learn
-        # =====================================================
-
-        for skill in ats_result.missing_skills[:5]:
-
-            recommendations.skills_to_learn.append(
-                f"Learn {skill} and build at least one project demonstrating it."
-            )
-
-        # =====================================================
-        # Resume Improvements
-        # =====================================================
-
-        recommendations.resume_improvements.extend(
-            [
-                "Use measurable achievements wherever possible (for example: 'Improved accuracy by 15%').",
-                "Tailor your resume for every job application.",
-                "Highlight your strongest technical projects near the top of the resume.",
-                "Keep formatting clean and ATS-friendly.",
-            ]
+        self._technical(
+            resume_data,
+            ats_result,
+            result,
         )
 
-        # =====================================================
-        # Next Steps
-        # =====================================================
+        self._resume(
+            resume_data,
+            ats_result,
+            result,
+        )
 
-        if ats_result.overall_score >= 80:
+        self._career(
+            resume_data,
+            ats_result,
+            result,
+        )
 
-            recommendations.next_steps.extend(
+        return result
+
+    # =====================================================
+
+    def _technical(
+        self,
+        resume_data,
+        ats_result,
+        result,
+    ):
+
+        domain = resume_data.metadata.get(
+            "primary_domain",
+            "General",
+        )
+
+        if ats_result.missing_skills:
+
+            result.technical.append(
+                "Learn: "
+                + ", ".join(
+                    ats_result.missing_skills[:5]
+                )
+            )
+
+        if domain == "AI/ML":
+
+            result.technical.append(
+                "Build an end-to-end ML deployment project."
+            )
+
+        elif domain == "Web Development":
+
+            result.technical.append(
+                "Deploy a full-stack application online."
+            )
+
+        elif domain == "Data Science":
+
+            result.technical.append(
+                "Create an interactive analytics dashboard."
+            )
+
+        elif domain == "DevOps":
+
+            result.technical.append(
+                "Build a CI/CD deployment pipeline."
+            )
+
+    # =====================================================
+
+    def _resume(
+        self,
+        resume_data,
+        ats_result,
+        result,
+    ):
+
+        if ats_result.projects_score < 70:
+
+            result.resume.append(
+                "Add more practical projects."
+            )
+
+        if ats_result.experience_score < 70:
+
+            result.resume.append(
+                "Include internships or freelance experience."
+            )
+
+        if ats_result.completeness_score < 100:
+
+            result.resume.append(
+                "Complete all personal information."
+            )
+
+        result.resume.append(
+            "Use measurable achievements whenever possible."
+        )
+
+    # =====================================================
+
+    def _career(
+        self,
+        resume_data,
+        ats_result,
+        result,
+    ):
+
+        domain = resume_data.metadata.get(
+            "primary_domain",
+            "General",
+        )
+
+        if domain == "AI/ML":
+
+            result.career.extend(
                 [
-                    "Start preparing for technical interviews.",
-                    "Practice behavioral interview questions.",
-                    "Continue applying to roles that match your profile.",
+                    "Participate in Kaggle competitions.",
+                    "Learn MLOps fundamentals.",
                 ]
             )
 
-        else:
+        elif domain == "Web Development":
 
-            recommendations.next_steps.extend(
+            result.career.extend(
                 [
-                    "Complete one additional portfolio project using the missing technologies.",
-                    "Update your GitHub repositories with proper documentation.",
-                    "Revise your resume after improving your missing skills.",
+                    "Build a portfolio website.",
+                    "Contribute to open-source web projects.",
                 ]
             )
 
-        return recommendations
+        elif domain == "Data Science":
+
+            result.career.extend(
+                [
+                    "Practice SQL interview questions.",
+                    "Create data visualization projects.",
+                ]
+            )
+
+        elif domain == "DevOps":
+
+            result.career.extend(
+                [
+                    "Learn Kubernetes.",
+                    "Earn an AWS certification.",
+                ]
+            )

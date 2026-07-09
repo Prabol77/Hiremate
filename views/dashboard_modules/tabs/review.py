@@ -1,21 +1,15 @@
 """
-Review Tab.
+Review Dashboard Tab.
 """
-
-from models.review_model import ReviewResult
 
 from components.dashboard.review_details import (
     render_review_details,
 )
 
 
-def render_review_tab(
-    review: ReviewResult,
-):
+def render_review_tab(review):
     """
-    Render AI review tab.
+    Render review tab.
     """
 
-    render_review_details(
-        review,
-    )
+    render_review_details(review)

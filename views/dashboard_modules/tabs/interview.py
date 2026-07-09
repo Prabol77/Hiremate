@@ -1,5 +1,5 @@
 """
-Interview Tab.
+Interview Dashboard.
 """
 
 from components.dashboard.interview_details import (
@@ -7,12 +7,7 @@ from components.dashboard.interview_details import (
 )
 
 
-def render_interview_tab(
-    interview,
-):
-    """
-    Render interview preparation.
-    """
+def render_interview_tab(interview):
 
     render_interview_details(
         interview,

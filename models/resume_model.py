@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Dict, List
-
+from services.metadata_service import (
+    MetadataService,
+)
 
 @dataclass
 class PersonalInfo:
@@ -61,3 +63,6 @@ class ResumeData:
     # ⭐ New
     # Stores the raw text of each detected resume section.
     sections: Dict[str, str] = field(default_factory=dict)
+    metadata: dict = field(
+    default_factory=dict
+)

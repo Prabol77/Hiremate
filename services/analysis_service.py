@@ -3,7 +3,7 @@ from services.ats_service import ATSService
 from services.interview_service import InterviewService
 from services.jd_service import JDService
 from services.resume_service import ResumeService
-
+from services.recommendation_service import RecommendationService
 
 class AnalysisService:
     """
@@ -16,12 +16,10 @@ class AnalysisService:
     - AI Resume Review
     - AI Recommendations
     - AI Interview Questions
+    - AI Cover Letter
     """
 
     def __init__(self):
-        """
-        Initialize all analysis services.
-        """
 
         self.resume_service = ResumeService()
 
@@ -33,80 +31,83 @@ class AnalysisService:
 
         self.interview_service = InterviewService()
 
+        self.recommendation_service = RecommendationService()
+
+    # =====================================================
+    # Main Analysis Pipeline
+    # =====================================================
+
     def analyze(
-            
         self,
         resume_text: str,
         jd_text: str,
     ):
-        """
-        Execute the complete HireMate analysis pipeline.
-        """
 
-    # ==========================================
-    # Resume Parsing
-    # ==========================================
+        # -------------------------------------------------
+        # Parse Resume
+        # -------------------------------------------------
 
         resume_data = self.resume_service.parse(
             resume_text,
         )
 
-    # ==========================================
-    # Job Description Parsing
-    # ==========================================
+        # -------------------------------------------------
+        # Parse Job Description
+        # -------------------------------------------------
 
         job_data = self.jd_service.parse(
             jd_text,
         )
 
-    # ==========================================
-    # ATS Matching
-    # ==========================================
+        # -------------------------------------------------
+        # ATS Analysis
+        # -------------------------------------------------
 
-        ats_result = self.ats_service.compare(
+        ats_result = self.ats_service.analyze(
             resume_data,
-            job_data,
+            job_data.skills,
         )
 
-    # ==========================================
-    # AI Resume Review
-    # ==========================================
+        # -------------------------------------------------
+        # AI Resume Review
+        # -------------------------------------------------
 
         review = self.ai_service.generate_review(
             resume_text,
             jd_text,
         )
 
-    # ==========================================
-    # AI Recommendations
-    # ==========================================
+        # -------------------------------------------------
+        # AI Recommendations
+        # -------------------------------------------------
 
-        recommendations = self.ai_service.generate_recommendations(
-            resume_text,
-            jd_text,
+        recommendations = self.recommendation_service.generate(
+            resume_data,
+            ats_result,
         )
 
-    # ==========================================
-    # AI Interview Questions
-    # ==========================================
+        # -------------------------------------------------
+        # AI Interview Questions
+        # (Uses structured ResumeData)
+        # -------------------------------------------------
 
         interview = self.interview_service.generate(
-            resume_text,
+            resume_data,
             jd_text,
         )
 
-    # ==========================================
-    # AI Cover Letter
-    # ==========================================
+        # -------------------------------------------------
+        # AI Cover Letter
+        # -------------------------------------------------
 
         cover_letter = self.ai_service.generate_cover_letter(
             resume_text,
             jd_text,
         )
 
-    # ==========================================
-    # Return Complete Analysis
-    # ==========================================
+        # -------------------------------------------------
+        # Return Complete Analysis
+        # -------------------------------------------------
 
         return (
             resume_data,

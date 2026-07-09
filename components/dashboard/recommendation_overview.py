@@ -1,30 +1,59 @@
 """
-Dashboard Recommendation Overview.
+Recommendation Overview.
 """
 
 import streamlit as st
-
-from models.recommendation_model import (
-    RecommendationResult,
-)
 
 from components.ui.section_header import (
     render_section_header,
 )
 
 
+def _render_section(
+    title: str,
+    items: list[str],
+):
+
+    st.subheader(title)
+
+    if not items:
+
+        st.info("No recommendations.")
+
+        return
+
+    for item in items:
+
+        st.markdown(f"• {item}")
+
+
 def render_recommendation_overview(
-    recommendation: RecommendationResult,
+    recommendation,
 ):
     """
-    Display recommendation preview.
+    Render recommendation overview.
     """
 
     render_section_header(
-        "💡 Recommendations",
-        "Top improvements suggested by HireMate AI.",
+        "💡 Career Roadmap",
+        "Personalized recommendations to improve your profile.",
     )
 
-    for item in recommendation.resume_improvements[:5]:
+    _render_section(
+        "🚀 Technical",
+        recommendation.technical,
+    )
 
-        st.success(item)
+    st.divider()
+
+    _render_section(
+        "📄 Resume",
+        recommendation.resume,
+    )
+
+    st.divider()
+
+    _render_section(
+        "💼 Career",
+        recommendation.career,
+    )
