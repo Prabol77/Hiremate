@@ -40,6 +40,9 @@ def get_cached_analysis(
         resume_data,
         job_data,
         ats_result,
+        skill_gap,
+        roadmap,
+        career,
         review,
         recommendations,
         interview,
@@ -91,7 +94,7 @@ def get_cached_analysis(
     )
 
     # ======================================================
-    # Initialize Analysis Service
+    # Analysis
     # ======================================================
 
     analysis = AnalysisService()
@@ -105,6 +108,9 @@ def get_cached_analysis(
         resume_data,
         job_data,
         ats_result,
+        skill_gap,
+        roadmap,
+        career,
         review,
         recommendations,
         interview,
@@ -119,6 +125,10 @@ def get_cached_analysis(
         "🤖 Generating AI insights...",
     )
 
+    # ======================================================
+    # Final Result
+    # ======================================================
+
     result = (
         resume_pdf,
         resume_text,
@@ -126,6 +136,9 @@ def get_cached_analysis(
         resume_data,
         job_data,
         ats_result,
+        skill_gap,
+        roadmap,
+        career,
         review,
         recommendations,
         interview,

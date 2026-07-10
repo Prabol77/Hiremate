@@ -3,23 +3,32 @@ HireMate Dashboard
 
 Main dashboard entry point.
 
-Responsibilities:
-- Render hero section
-- Handle file upload
-- Execute analysis
-- Render dashboard tabs
-- Handle errors
+Responsibilities
+----------------
+- Render Hero Section
+- Handle File Upload
+- Execute Analysis
+- Render Dashboard Workspaces
 """
 
 import streamlit as st
 
-from components.layout.hero_section import render_hero_section
-from components.widgets.empty_state import render_empty_state
-from components.widgets.error_card import render_error_card
-
-from views.dashboard_modules.tabs.cover_letter import (
-    render_cover_letter_tab,
+from components.layout.hero_section import (
+    render_hero_section,
 )
+
+from components.widgets.empty_state import (
+    render_empty_state,
+)
+
+from components.widgets.error_card import (
+    render_error_card,
+)
+
+from services.session_service import (
+    SessionService,
+)
+
 from views.dashboard_modules.upload import (
     render_upload_section,
 )
@@ -32,31 +41,21 @@ from views.dashboard_modules.tabs.overview import (
     render_overview_tab,
 )
 
-from views.dashboard_modules.tabs.skills import (
-    render_skills_tab,
+from views.dashboard_modules.tabs.resume import (
+    render_resume_tab,
 )
 
-from views.dashboard_modules.tabs.review import (
-    render_review_tab,
-)
-
-from views.dashboard_modules.tabs.recommendation import (
-    render_recommendation_tab,
+from views.dashboard_modules.tabs.career import (
+    render_career_tab,
 )
 
 from views.dashboard_modules.tabs.interview import (
     render_interview_tab,
 )
 
-from views.dashboard_modules.tabs.rewrite import (
-    render_rewrite_tab,
+from views.dashboard_modules.tabs.documents import (
+    render_documents_tab,
 )
-
-from views.dashboard_modules.tabs.candidate import (
-    render_candidate_tab,
-)
-
-from services.session_service import SessionService
 
 
 # ==========================================================
@@ -66,10 +65,18 @@ from services.session_service import SessionService
 
 def show_dashboard():
     """
-    Render the main HireMate dashboard.
+    Render the HireMate dashboard.
     """
 
+    # ======================================================
+    # Hero Section
+    # ======================================================
+
     render_hero_section()
+
+    # ======================================================
+    # Upload Section
+    # ======================================================
 
     resume, jd = render_upload_section()
 
@@ -81,10 +88,9 @@ def show_dashboard():
 
     try:
 
-        analysis = get_cached_analysis(
-            resume,
-            jd,
-        )
+        # ==================================================
+        # Analysis
+        # ==================================================
 
         (
             resume_pdf,
@@ -93,12 +99,21 @@ def show_dashboard():
             resume_data,
             job_data,
             ats_result,
+            skill_gap,
+            roadmap,
+            career,
             review,
             recommendations,
             interview,
             cover_letter,
-        ) = analysis
-        import streamlit as st
+        ) = get_cached_analysis(
+            resume,
+            jd,
+        )
+
+        # ==================================================
+        # Start New Analysis
+        # ==================================================
 
         if st.button(
             "🔄 Start New Analysis",
@@ -119,29 +134,31 @@ def show_dashboard():
 
             st.rerun()
 
+        # ==================================================
+        # Dashboard Workspaces
+        # ==================================================
+
         (
-            overview_tab,
-            skills_tab,
-            review_tab,
-            recommendation_tab,
+            dashboard_tab,
+            resume_tab,
+            career_tab,
             interview_tab,
-            rewrite_tab,
-            cover_letter_tab,
-            candidate_tab,
+            documents_tab,
         ) = st.tabs(
             [
-                "📊 Overview",
-                "🛠 Skills",
-                "🤖 AI Review",
-                "💡 Recommendations",
+                "🏠 Dashboard",
+                "👤 Resume",
+                "🚀 Career",
                 "🎤 Interview",
-                "✨ Rewrite",
-                "📄 Cover Letter",
-                "👤 Candidate",
+                "📄 Documents",
             ]
         )
 
-        with overview_tab:
+        # ==================================================
+        # Dashboard Workspace
+        # ==================================================
+
+        with dashboard_tab:
 
             render_overview_tab(
                 resume_pdf,
@@ -153,23 +170,34 @@ def show_dashboard():
                 cover_letter,
             )
 
-        with skills_tab:
+        # ==================================================
+        # Resume Workspace
+        # ==================================================
 
-            render_skills_tab(
+        with resume_tab:
+
+            render_resume_tab(
+                resume_data,
+                resume_text,
                 ats_result,
-            )
-
-        with review_tab:
-
-            render_review_tab(
                 review,
             )
 
-        with recommendation_tab:
+        # ==================================================
+        # Career Workspace
+        # ==================================================
 
-            render_recommendation_tab(
-                recommendations,
+        with career_tab:
+
+            render_career_tab(
+                career,
+                skill_gap,
+                roadmap,
             )
+
+        # ==================================================
+        # Interview Workspace
+        # ==================================================
 
         with interview_tab:
 
@@ -177,24 +205,14 @@ def show_dashboard():
                 interview,
             )
 
-        with rewrite_tab:
+        # ==================================================
+        # Documents Workspace
+        # ==================================================
 
-            render_rewrite_tab(
-                resume_data,
-                jd_text,
-            )
-        with cover_letter_tab:
+        with documents_tab:
 
-            render_cover_letter_tab(
+            render_documents_tab(
                 cover_letter,
-            )
-
-
-        with candidate_tab:
-
-            render_candidate_tab(
-                resume_data,
-                resume_text,
             )
 
     except Exception as error:
