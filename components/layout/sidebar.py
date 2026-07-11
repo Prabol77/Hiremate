@@ -1,7 +1,11 @@
+"""
+HireMate Sidebar.
+"""
+
 import streamlit as st
 
 
-def render_sidebar():
+def render_sidebar() -> str:
     """
     Render the application sidebar.
 
@@ -15,15 +19,17 @@ def render_sidebar():
 
         st.title("💼 HireMate")
 
-        st.markdown("---")
+        st.caption(
+            "Version 0.8.0"
+        )
+
+        st.divider()
 
         page = st.radio(
             "Navigation",
             (
-                "Dashboard",
-                "Resume Analysis",
-                "Interview Prep",
-                "About",
+                "🏠 Dashboard",
+                "📘 Product Info",
             ),
         )
 

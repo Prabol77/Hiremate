@@ -7,8 +7,9 @@ Responsibilities
 ----------------
 - Render Hero Section
 - Handle File Upload
-- Execute Analysis
+- Execute Resume Analysis
 - Render Dashboard Workspaces
+- Handle Errors
 """
 
 import streamlit as st
@@ -65,7 +66,7 @@ from views.dashboard_modules.tabs.documents import (
 
 def show_dashboard():
     """
-    Render the HireMate dashboard.
+    Render the HireMate Dashboard.
     """
 
     # ======================================================
@@ -86,11 +87,16 @@ def show_dashboard():
 
         return
 
+    # ======================================================
+    # Analysis
+    # ======================================================
+
     try:
 
-        # ==================================================
-        # Analysis
-        # ==================================================
+        analysis = get_cached_analysis(
+            resume,
+            jd,
+        )
 
         (
             resume_pdf,
@@ -102,14 +108,17 @@ def show_dashboard():
             skill_gap,
             roadmap,
             career,
+            hireability,
+            projects,
+            career_coach,
+            company_matches,
+            certifications,
+            personalization,
             review,
             recommendations,
             interview,
             cover_letter,
-        ) = get_cached_analysis(
-            resume,
-            jd,
-        )
+        ) = analysis
 
         # ==================================================
         # Start New Analysis
@@ -164,6 +173,7 @@ def show_dashboard():
                 resume_pdf,
                 resume_data,
                 ats_result,
+                hireability,
                 review,
                 recommendations,
                 interview,
@@ -191,6 +201,12 @@ def show_dashboard():
 
             render_career_tab(
                 career,
+                hireability,
+                career_coach,
+                projects,
+                company_matches,
+                certifications,
+                personalization,
                 skill_gap,
                 roadmap,
             )
@@ -214,6 +230,10 @@ def show_dashboard():
             render_documents_tab(
                 cover_letter,
             )
+
+    # ======================================================
+    # Error Handling
+    # ======================================================
 
     except Exception as error:
 

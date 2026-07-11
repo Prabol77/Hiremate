@@ -43,6 +43,8 @@ def get_cached_analysis(
         skill_gap,
         roadmap,
         career,
+        hireability,
+        projects,
         review,
         recommendations,
         interview,
@@ -111,6 +113,12 @@ def get_cached_analysis(
         skill_gap,
         roadmap,
         career,
+        hireability,
+        projects,
+        career_coach,
+        company_matches,
+        certifications,
+        personalization,
         review,
         recommendations,
         interview,
@@ -130,6 +138,7 @@ def get_cached_analysis(
     # ======================================================
 
     result = (
+
         resume_pdf,
         resume_text,
         jd_text,
@@ -139,6 +148,12 @@ def get_cached_analysis(
         skill_gap,
         roadmap,
         career,
+        hireability,
+        projects,
+        career_coach,
+        company_matches,
+        certifications,
+        personalization,
         review,
         recommendations,
         interview,

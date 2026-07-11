@@ -7,49 +7,61 @@ def render_hero_section() -> None:
     """
 
     st.title("💼 HireMate")
+    st.caption("Version 0.8.0 • AI Career Intelligence Platform")
 
-    st.subheader("AI-Powered Resume Intelligence Platform")
+    st.subheader(
+        "AI-Powered Career Intelligence Platform"
+    )
 
-    st.write("""
-Analyze your resume against a job description to evaluate
-ATS compatibility, identify missing skills, receive
-AI-powered resume feedback, and prepare for interviews.
-""")
+    st.write(
+        """
+Analyze your resume against a job description to evaluate ATS compatibility,
+identify skill gaps, improve hireability, receive AI-powered career coaching,
+discover company matches, earn certification recommendations, and prepare
+for interviews.
+"""
+    )
 
     st.divider()
 
     st.markdown("### ✨ What HireMate Offers")
 
-    available_features = [
+    features_left = [
+
         "🎯 ATS Resume Matching",
-        "🛠 Skill Gap Analysis",
-        "🤖 AI Resume Intelligence",
+
+        "🧠 AI Career Coach",
+
+        "🏆 Hireability Intelligence",
+
+        "🏢 Company Match Intelligence",
+
     ]
 
-    upcoming_features = [
-        "🚧 AI Career Coach (Coming Soon)",
+    features_right = [
+
+        "🛠 Skill Gap Analysis",
+
+        "📜 Certification Intelligence",
+
         "🎤 Interview Preparation",
-        "📚 Learning Roadmap",
+
+        "🗺 Personalized Learning Roadmap",
+
     ]
 
     col1, col2 = st.columns(2)
 
     with col1:
 
-        for feature in available_features:
+        for feature in features_left:
 
             st.success(feature)
 
     with col2:
 
-        for feature in upcoming_features:
+        for feature in features_right:
 
-            if "Coming Soon" in feature:
-
-                st.info(feature)
-
-            else:
-
-                st.success(feature)
+            st.success(feature)
 
     st.divider()

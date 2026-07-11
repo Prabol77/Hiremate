@@ -3,7 +3,24 @@ HireMate Analysis Service.
 
 Coordinates the complete HireMate analysis pipeline.
 """
-
+from services.hireability_service import (
+    HireabilityService,
+)
+from services.personalization_service import (
+    PersonalizationService,
+)
+from services.company_match_service import (
+    CompanyMatchService,
+)
+from services.career_coach_service import (
+    CareerCoachService,
+)
+from services.project_recommendation_service import (
+    ProjectRecommendationService,
+)
+from services.certification_service import (
+    CertificationService,
+)
 from services.resume_service import ResumeService
 from services.jd_service import JDService
 from services.ats_service import ATSService
@@ -85,7 +102,34 @@ class AnalysisService:
         self.interview_service = (
             InterviewService()
         )
+        # ===============================================
+        # Hireability Intelligence
+        # ===============================================
 
+        self.hireability_service = (
+            HireabilityService()
+        )
+
+        # ===============================================
+        # Project Intelligence
+        # ===============================================
+
+        self.project_recommendation_service = (
+            ProjectRecommendationService()
+        )
+
+        self.career_coach_service = (
+            CareerCoachService()
+        )
+        self.company_match_service = (
+            CompanyMatchService()
+        )
+        self.certification_service = (
+            CertificationService()
+        )
+        self.personalization_service = (
+            PersonalizationService()
+        )
     # ==================================================
     # Main Analysis Pipeline
     # ==================================================
@@ -140,6 +184,56 @@ class AnalysisService:
             roadmap,
         )
 
+        hireability = self.hireability_service.generate(
+            ats_result,
+            career,
+        )
+
+        # ===============================================
+        # Project Recommendations
+        # ===============================================
+
+        projects = (
+            self.project_recommendation_service.generate(
+                resume_data,
+                ats_result,
+            )
+        )
+
+        career_coach = (
+            self.career_coach_service.generate(
+                resume_data,
+                ats_result,
+                career,
+                hireability,
+                projects,
+            )
+        )
+
+        company_matches = (
+            self.company_match_service.generate(
+                resume_data,
+                ats_result,
+                hireability,
+            )
+        )
+
+        certifications = (
+            self.certification_service.generate(
+                ats_result,
+            )
+        )
+        personalization = (
+            self.personalization_service.generate(
+                resume_data,
+                career,
+                hireability,
+                projects,
+                company_matches,
+                certifications,
+            )
+        )
+
         # ===============================================
         # AI Resume Review
         # ===============================================
@@ -191,6 +285,12 @@ class AnalysisService:
             skill_gap,
             roadmap,
             career,
+            hireability,
+            projects,
+            career_coach,
+            company_matches,
+            certifications,
+            personalization,
             review,
             recommendations,
             interview,

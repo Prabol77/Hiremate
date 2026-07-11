@@ -12,6 +12,10 @@ Responsibilities:
 
 import streamlit as st
 
+from components.dashboard.hireability_card import (
+    render_hireability_card,
+)
+
 from components.ui.metric_card_v2 import (
     render_metric_card_v2,
 )
@@ -57,6 +61,7 @@ def render_overview_tab(
     resume_pdf,
     resume_data,
     ats_result,
+    hireability,
     review,
     recommendations,
     interview,
@@ -71,6 +76,12 @@ def render_overview_tab(
     # =====================================================
 
     st.title("🤖 HireMate Dashboard")
+
+    render_hireability_card(
+        hireability,
+    )
+
+    st.divider()
 
     st.caption(
         "AI-powered resume analysis and career insights."
