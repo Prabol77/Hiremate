@@ -284,30 +284,6 @@ streamlit run app.py
 
 ---
 
-# 📈 Future Roadmap
-
-## v1.1
-
-- Resume PDF Export
-- Resume Version History
-- Better Resume Templates
-
-## v1.2
-
-- Company-specific ATS Models
-- AI Mock Interview
-- Voice Interview Simulator
-
-## v2.0
-
-- Recruiter Portal
-- Resume Benchmarking
-- Job Tracker
-- Application Dashboard
-- AI Career Assistant
-
----
-
 # 🤝 Contributing
 
 Contributions are welcome.
