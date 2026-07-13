@@ -7,7 +7,7 @@ def render_hero_section() -> None:
     """
 
     st.title("💼 HireMate")
-    st.caption("Version 0.8.0 • AI Career Intelligence Platform")
+    st.caption("Version 1.0.0 • AI Career Intelligence Platform")
 
     st.subheader(
         "AI-Powered Career Intelligence Platform"

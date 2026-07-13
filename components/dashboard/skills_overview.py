@@ -9,6 +9,43 @@ from components.ui.section_header import (
 )
 
 
+def _render_skill_chips(
+    skills: list[str],
+    color: str,
+):
+    if not skills:
+        st.info("None")
+        return
+
+    html = '<div style="display:flex; flex-wrap:wrap; gap:8px;">'
+
+    for skill in skills:
+        html += (
+            f'<span style="'
+            f'background:{color};'
+            f'color:white;'
+            f'padding:6px 14px;'
+            f'border-radius:999px;'
+            f'font-size:13px;'
+            f'font-weight:600;'
+            f'white-space:nowrap;'
+            f'display:inline-block;'
+            f'">'
+            f'{skill}'
+            f'</span>'
+        )
+
+    html += "</div>"
+
+    st.markdown(
+        html,
+        unsafe_allow_html=True,
+    )
+# ==========================================================
+# Skills Overview
+# ==========================================================
+
+
 def render_skills_overview(
     matched_skills: list[str],
     missing_skills: list[str],
@@ -22,32 +59,26 @@ def render_skills_overview(
         "Skills identified from the resume and job description.",
     )
 
-    col1, col2 = st.columns(2)
+    left, right = st.columns(2)
 
-    with col1:
+    with left:
 
-        st.subheader("✅ Matched Skills")
+        st.subheader(
+            "✅ Matched Skills"
+        )
 
-        if matched_skills:
+        _render_skill_chips(
+            matched_skills,
+            "#16a34a",
+        )
 
-            for skill in matched_skills:
+    with right:
 
-                st.success(skill)
+        st.subheader(
+            "⚠ Missing Skills"
+        )
 
-        else:
-
-            st.info("No matched skills found.")
-
-    with col2:
-
-        st.subheader("⚠ Missing Skills")
-
-        if missing_skills:
-
-            for skill in missing_skills:
-
-                st.warning(skill)
-
-        else:
-
-            st.success("No missing skills.")
+        _render_skill_chips(
+            missing_skills,
+            "#d97706",
+        )

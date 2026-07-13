@@ -1,47 +1,37 @@
 import json
 
 REWRITE_SYSTEM_PROMPT = """
-You are an expert resume writer.
+You are HireMate AI.
 
-Rewrite the given resume section using
-professional ATS-friendly language.
-
-Improve clarity, grammar, impact,
-and keyword optimization.
+Rewrite resumes professionally.
 
 Return ONLY valid JSON.
-
-Do not use markdown.
-Do not wrap JSON inside code blocks.
 """
 
 
 def rewrite_prompt(
-    section_name: str,
-    section_text: str,
-    job_description: str,
+    resume_text,
+    jd_text,
 ):
     schema = {
-        "original_text": "",
-        "improved_text": "",
-        "explanation": "",
-        "estimated_improvement": "",
+        "professional_summary": "",
+        "experience": "",
+        "projects": "",
+        "skills": "",
+        "suggestions": [],
+        "ats_improvement": "",
     }
 
     return f"""
-Return JSON matching this schema.
+Resume
+
+{resume_text}
+
+Job Description
+
+{jd_text}
+
+Return:
 
 {json.dumps(schema, indent=4)}
-
-Resume Section:
-
-{section_name}
-
-Original Content:
-
-{section_text}
-
-Job Description:
-
-{job_description}
 """

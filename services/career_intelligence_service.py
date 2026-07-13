@@ -122,14 +122,14 @@ class CareerIntelligenceService:
 
         # ==================================================
         # Recommended Projects
-        # (Placeholder for v0.8.0)
+        # (Placeholder for v1.0.0)
         # ==================================================
 
         career.recommended_projects = []
 
         # ==================================================
         # Recommended Certifications
-        # (Placeholder for v0.8.0)
+        # (Placeholder for v1.0.0)
         # ==================================================
 
         career.recommended_certifications = []

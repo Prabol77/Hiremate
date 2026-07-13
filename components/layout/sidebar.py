@@ -20,7 +20,7 @@ def render_sidebar() -> str:
         st.title("💼 HireMate")
 
         st.caption(
-            "Version 0.8.0"
+            "Version 1.0.0"
         )
 
         st.divider()

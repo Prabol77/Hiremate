@@ -1,18 +1,22 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
 class RewriteResult:
     """
-    Represents the AI rewrite of a single resume section.
+    AI rewritten resume.
     """
 
-    section_name: str = ""
+    professional_summary: str = ""
 
-    original_text: str = ""
+    experience: str = ""
 
-    improved_text: str = ""
+    projects: str = ""
 
-    explanation: str = ""
+    skills: str = ""
 
-    estimated_improvement: str = ""
+    suggestions: list[str] = field(
+        default_factory=list,
+    )
+
+    ats_improvement: str = ""

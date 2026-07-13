@@ -368,7 +368,7 @@ def render_candidate_profile(
         if not skills:
             continue
 
-        st.markdown(f"#### {category}")
+        st.markdown(f"### {category}")
 
         render_skill_chips(
             skills,

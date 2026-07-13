@@ -12,11 +12,10 @@ from services.groq_service import (
     GroqService,
 )
 
-from utils.career_coach_prompt import (
+from utils.prompts import (
     CAREER_COACH_SYSTEM_PROMPT,
     career_coach_prompt,
 )
-
 
 class CareerCoachService:
     """

@@ -185,23 +185,28 @@ def render_overview_tab(
     # AI Summary & Skills
     # =====================================================
 
-    left, right = st.columns(
-        [2, 1],
-        gap="large",
+# =====================================================
+# AI Resume Summary
+# =====================================================
+
+    st.subheader("🤖 AI Resume Summary")
+
+    render_summary_card(
+        review.summary,
     )
 
-    with left:
+    st.divider()
 
-        render_summary_card(
-            review.summary,
-        )
+# =====================================================
+# Skills Analysis
+# =====================================================
 
-    with right:
+    st.subheader("🛠 Skills Analysis")
 
-        render_skills_overview(
-            ats_result.matched_skills,
-            ats_result.missing_skills,
-        )
+    render_skills_overview(
+        ats_result.matched_skills,
+        ats_result.missing_skills,
+    )
 
     st.divider()
 
@@ -244,5 +249,5 @@ def render_overview_tab(
     # =====================================================
 
     st.caption(
-        "HireMate v0.6 • AI Resume Intelligence Dashboard"
+        "HireMate v1.0.0 • AI Resume Intelligence Dashboard"
     )

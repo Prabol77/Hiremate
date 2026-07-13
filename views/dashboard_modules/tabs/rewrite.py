@@ -1,101 +1,239 @@
 """
-Rewrite Dashboard Tab.
-
-Responsibilities:
-- Preview resume sections
-- Rewrite individual sections using AI
-- Display rewritten content
+Resume Rewrite Workspace.
 """
 
 import streamlit as st
 
-from models.resume_model import ResumeData
-
-from services.ai_service import AIService
-
-from components.cards.rewrite_card import (
-    render_rewrite_card,
-)
-
 
 # ==========================================================
-# Rewrite Tab
+# Resume Rewrite Workspace
 # ==========================================================
 
 
 def render_rewrite_tab(
-    resume_data: ResumeData,
-    jd_text: str,
+    rewrite,
 ):
     """
-    Render the AI Resume Rewrite dashboard tab.
+    Render the AI Resume Rewrite workspace.
     """
 
-    st.header("✨ AI Resume Rewrite")
-
-    st.write(
-        "Select a resume section to improve. "
-        "HireMate rewrites your content while preserving factual accuracy."
+    st.title(
+        "✨ AI Resume Rewrite"
     )
 
-    if not resume_data.sections:
+    st.caption(
+        "Generate an ATS-optimized version of your resume while keeping all information truthful."
+    )
 
-        st.info(
-            "No resume sections were detected."
+    if rewrite is None:
+
+        st.warning(
+            "Resume rewrite is unavailable."
         )
 
         return
 
-    ai_service = AIService()
+    # ======================================================
+    # Professional Summary
+    # ======================================================
 
-    # ------------------------------------------------------
-    # Resume Sections
-    # ------------------------------------------------------
+    st.subheader(
+        "📝 Professional Summary"
+    )
 
-    for section_name, section_text in resume_data.sections.items():
-
-        if not section_text.strip():
-
-            continue
-
-        with st.expander(
-            f"📄 {section_name.title()}",
-            expanded=False,
-        ):
-
-            st.text_area(
-                label="Current Content",
-                value=section_text,
-                height=180,
-                disabled=True,
-                key=f"{section_name}_preview",
-            )
-
-            if st.button(
-                f"✨ Rewrite {section_name.title()}",
-                key=f"rewrite_{section_name}",
-                use_container_width=True,
-            ):
-
-                with st.spinner(
-                    "Generating improved version..."
-                ):
-
-                    rewrite = ai_service.rewrite_resume(
-                        section_name=section_name,
-                        section_text=section_text,
-                        jd_text=jd_text,
-                    )
-
-                st.divider()
-
-                render_rewrite_card(
-                    rewrite,
-                )
+    st.text_area(
+        "",
+        value=rewrite.professional_summary or "No summary generated.",
+        height=160,
+        disabled=True,
+    )
 
     st.divider()
 
-    st.caption(
-        "HireMate improves wording, grammar, ATS keywords and "
-        "professional tone without inventing new experience."
+    # ======================================================
+    # Experience
+    # ======================================================
+
+    st.subheader(
+        "💼 Experience"
+    )
+
+    st.text_area(
+        "",
+        value=rewrite.experience or "No experience generated.",
+        height=220,
+        disabled=True,
+    )
+
+    st.divider()
+
+# ======================================================
+# Projects
+# ======================================================
+
+    st.subheader(
+        "🚀 Projects"
+    )
+
+    projects_text = ""
+
+    if isinstance(rewrite.projects, list):
+
+        for project in rewrite.projects:
+
+            if isinstance(project, dict):
+
+                projects_text += (
+                    f"• {project.get("project_name",project.get("name", ""))}\n"
+                    f"  {project.get("project_description",project.get("description", ""))}\n\n"
+                )
+
+            else:
+
+                projects_text += f"• {project}\n"
+
+    else:
+
+        projects_text = rewrite.projects or "No projects generated."
+
+    st.text_area(
+        "",
+        value=projects_text,
+        height=220,
+        disabled=True,
+    )
+    st.divider()
+
+# ======================================================
+# Skills
+# ======================================================
+
+    st.subheader(
+        "🛠 Optimized Skills"
+    )
+
+    if isinstance(rewrite.skills, list):
+
+        skills_text = "\n".join(
+            f"• {skill}"
+            for skill in rewrite.skills
+        )
+
+    else:
+
+        skills_text = rewrite.skills or "No skills generated."
+
+    st.text_area(
+        "",
+        value=skills_text,
+        height=180,
+        disabled=True,
+    )
+    st.divider()
+
+    # ======================================================
+    # ATS Improvements
+    # ======================================================
+
+    st.subheader(
+        "🎯 ATS Improvements"
+    )
+
+    st.success(
+        rewrite.ats_improvement
+        or "No ATS improvements available."
+    )
+
+    st.divider()
+
+    # ======================================================
+    # Suggestions
+    # ======================================================
+
+    st.subheader(
+        "💡 AI Suggestions"
+    )
+
+    if rewrite.suggestions:
+
+        for suggestion in rewrite.suggestions:
+
+            st.markdown(
+                f"✅ {suggestion}"
+            )
+
+    else:
+
+        st.info(
+            "No suggestions available."
+        )
+
+    st.divider()
+
+    # ======================================================
+    # Export
+    # ======================================================
+
+    st.subheader(
+        "📄 Export"
+    )
+
+    rewritten_resume = f"""
+=============================
+HireMate AI Resume Rewrite
+=============================
+
+Professional Summary
+
+{rewrite.professional_summary}
+
+
+=================================
+
+Experience
+
+{rewrite.experience}
+
+
+=================================
+
+Projects
+
+{rewrite.projects}
+
+
+=================================
+
+Skills
+
+{rewrite.skills}
+
+
+=================================
+
+ATS Improvements
+
+{rewrite.ats_improvement}
+
+
+=================================
+
+Suggestions
+
+"""
+
+    if rewrite.suggestions:
+
+        for suggestion in rewrite.suggestions:
+
+            rewritten_resume += (
+                f"- {suggestion}\n"
+            )
+
+    st.download_button(
+        label="📥 Export ATS-Optimized Resume",
+        data=rewritten_resume,
+        file_name="HireMate_Resume_Rewrite.txt",
+        mime="text/plain",
+        use_container_width=True,
     )

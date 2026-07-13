@@ -12,7 +12,7 @@ from services.groq_service import (
     GroqService,
 )
 
-from utils.personalization_prompt import (
+from utils.prompts import (
     PERSONALIZATION_SYSTEM_PROMPT,
     personalization_prompt,
 )

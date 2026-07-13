@@ -123,6 +123,7 @@ def get_cached_analysis(
         recommendations,
         interview,
         cover_letter,
+        rewrite,
     ) = analysis.analyze(
         resume_text,
         jd_text,
@@ -158,6 +159,7 @@ def get_cached_analysis(
         recommendations,
         interview,
         cover_letter,
+        rewrite,
     )
 
     session.save_analysis(

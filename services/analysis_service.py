@@ -6,6 +6,9 @@ Coordinates the complete HireMate analysis pipeline.
 from services.hireability_service import (
     HireabilityService,
 )
+from services.rewrite_service import (
+    RewriteService,
+)
 from services.personalization_service import (
     PersonalizationService,
 )
@@ -130,6 +133,11 @@ class AnalysisService:
         self.personalization_service = (
             PersonalizationService()
         )
+        self.rewrite_service = (
+            RewriteService()
+        )
+
+
     # ==================================================
     # Main Analysis Pipeline
     # ==================================================
@@ -274,6 +282,13 @@ class AnalysisService:
             )
         )
 
+        rewrite = (
+            self.rewrite_service.generate(
+                resume_text,
+                jd_text,
+            )
+        )
+
         # ===============================================
         # Final Output
         # ===============================================
@@ -295,4 +310,5 @@ class AnalysisService:
             recommendations,
             interview,
             cover_letter,
+            rewrite,
         )

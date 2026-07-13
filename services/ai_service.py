@@ -4,15 +4,12 @@ from models.recommendation_model import RecommendationResult
 from models.review_model import ReviewResult
 from models.rewrite_model import RewriteResult
 from services.groq_service import GroqService
+
 from utils.prompts import (
     COVER_LETTER_SYSTEM_PROMPT,
-    RECOMMENDATION_SYSTEM_PROMPT,
-    REVIEW_SYSTEM_PROMPT,
-    REWRITE_SYSTEM_PROMPT,
     cover_letter_prompt,
-    recommendation_prompt,
+    REVIEW_SYSTEM_PROMPT,
     review_prompt,
-    rewrite_prompt,
 )
 
 

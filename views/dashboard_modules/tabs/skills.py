@@ -11,9 +11,51 @@ import streamlit as st
 
 from models.ats_model import ATSResult
 
-from components.widgets.skills_grid import (
-    render_skills_card,
-)
+
+# ==========================================================
+# Helper
+# ==========================================================
+
+
+def render_skill_chips(
+    skills: list[str],
+    color: str,
+):
+    """
+    Render compact horizontal skill chips.
+    """
+
+    if not skills:
+
+        st.info("None")
+
+        return
+
+    html = '<div style="display:flex; flex-wrap:wrap; gap:8px;">'
+
+    for skill in skills:
+
+        html += (
+            f'<span style="'
+            f'background:{color};'
+            f'color:white;'
+            f'padding:6px 14px;'
+            f'border-radius:999px;'
+            f'font-size:13px;'
+            f'font-weight:600;'
+            f'white-space:nowrap;'
+            f'display:inline-block;'
+            f'">'
+            f'{skill}'
+            f'</span>'
+        )
+
+    html += "</div>"
+
+    st.markdown(
+        html,
+        unsafe_allow_html=True,
+    )
 
 
 # ==========================================================
@@ -28,39 +70,47 @@ def render_skills_tab(
     Render the Skills dashboard tab.
     """
 
-    col1, col2 = st.columns(2)
+    left, right = st.columns(2)
 
-    # ------------------------------------------------------
+    # ======================================================
     # Matched Skills
-    # ------------------------------------------------------
+    # ======================================================
 
-    with col1:
+    with left:
 
-        render_skills_card(
-            title="✅ Matched Skills",
-            skills=ats_result.matched_skills,
-            status="success",
+        st.subheader(
+            "✅ Matched Skills"
         )
 
-    # ------------------------------------------------------
+        render_skill_chips(
+            ats_result.matched_skills,
+            "#16a34a",
+        )
+
+    # ======================================================
     # Missing Skills
-    # ------------------------------------------------------
+    # ======================================================
 
-    with col2:
+    with right:
 
-        render_skills_card(
-            title="❌ Missing Skills",
-            skills=ats_result.missing_skills,
-            status="error",
+        st.subheader(
+            "❌ Missing Skills"
+        )
+
+        render_skill_chips(
+            ats_result.missing_skills,
+            "#d97706",
         )
 
     st.divider()
 
-    # ------------------------------------------------------
+    # ======================================================
     # Statistics
-    # ------------------------------------------------------
+    # ======================================================
 
-    st.subheader("📊 Skill Statistics")
+    st.subheader(
+        "📈 Skills Overview"
+    )
 
     stat1, stat2, stat3 = st.columns(3)
 
@@ -68,26 +118,36 @@ def render_skills_tab(
 
         st.metric(
             "Matched",
-            len(ats_result.matched_skills),
+            len(
+                ats_result.matched_skills
+            ),
         )
 
     with stat2:
 
         st.metric(
             "Missing",
-            len(ats_result.missing_skills),
+            len(
+                ats_result.missing_skills
+            ),
         )
 
     with stat3:
 
         total = (
-            len(ats_result.matched_skills)
-            + len(ats_result.missing_skills)
+            len(
+                ats_result.matched_skills
+            )
+            + len(
+                ats_result.missing_skills
+            )
         )
 
         match_rate = (
             round(
-                len(ats_result.matched_skills)
+                len(
+                    ats_result.matched_skills
+                )
                 / total
                 * 100,
             )

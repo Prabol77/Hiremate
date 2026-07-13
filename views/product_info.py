@@ -13,7 +13,7 @@ def show_product_info():
     st.title("💼 HireMate")
 
     st.caption(
-        "Version 0.8.0"
+        "Version 1.0.0"
     )
 
     st.subheader(
@@ -96,7 +96,7 @@ with companies, and provides personalized career guidance.
 
     roadmap = {
 
-        "✅ v0.8.0": "Career Intelligence Platform",
+        "✅ v1.0.0": "Career Intelligence Platform",
 
         "🔜 v0.9.0": "Authentication & Progress Tracking",
 

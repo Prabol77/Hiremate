@@ -26,7 +26,7 @@ class HireabilityScore:
     improvement_potential: int = 0
 
     # ==================================================
-    # New v0.8.0 Fields
+    # New v1.0.0 Fields
     # ==================================================
 
     strengths: list[str] = field(

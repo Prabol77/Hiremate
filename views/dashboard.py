@@ -13,7 +13,9 @@ Responsibilities
 """
 
 import streamlit as st
-
+from views.dashboard_modules.tabs.rewrite import (
+    render_rewrite_tab,
+)
 from components.layout.hero_section import (
     render_hero_section,
 )
@@ -118,6 +120,7 @@ def show_dashboard():
             recommendations,
             interview,
             cover_letter,
+            rewrite,
         ) = analysis
 
         # ==================================================
@@ -150,6 +153,7 @@ def show_dashboard():
         (
             dashboard_tab,
             resume_tab,
+            rewrite_tab,
             career_tab,
             interview_tab,
             documents_tab,
@@ -157,6 +161,7 @@ def show_dashboard():
             [
                 "🏠 Dashboard",
                 "👤 Resume",
+                "✨ Rewrite",
                 "🚀 Career",
                 "🎤 Interview",
                 "📄 Documents",
@@ -191,6 +196,15 @@ def show_dashboard():
                 resume_text,
                 ats_result,
                 review,
+            )
+
+        # ==================================================
+        # Rewrite Workspace
+        # ==================================================
+
+        with rewrite_tab:
+            render_rewrite_tab(
+                rewrite,
             )
 
         # ==================================================
